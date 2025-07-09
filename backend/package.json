@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "name": "pa-la-olla-backend",
+  "version": "1.0.0",
+  "description": "Backend para el proyecto Pa La Olla",
+  "main": "app.js",
+  "scripts": {
+    "start": "node --watch ./server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1"
+  }
+}

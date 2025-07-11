@@ -8,7 +8,7 @@ export default function Home() {
 				<img
 					src={logoPaLaOlla}
 					alt=""
-					className="size-36"
+					className="size-36 rounded-full shadow-lg transition-transform duration-500 hover:scale-200 animate-spin"
 				/>
 			</div>
 		</main>

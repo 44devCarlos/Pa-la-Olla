@@ -10,6 +10,8 @@ export const crearRecetaRouter = ({ recetaModelo }) => {
     router.get("/ingredientesPrincipales", recetaControlador.obtenerIngredientesPrincipales);
     router.get("/filtrarPorIngrediente", recetaControlador.filtrarPorIngrediente);
     router.get("/todas", recetaControlador.obtenerTodasLasRecetas);
+    router.get("/calificaciones/:id_receta", recetaControlador.obtenerCalificacionesPorReceta);
+    router.get("/comentarios/:id_receta", recetaControlador.obtenerComentariosReceta);
     
 
     return router;

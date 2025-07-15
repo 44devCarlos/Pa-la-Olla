@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS `comentario` (
   `id_receta` int DEFAULT NULL,
   `id_usuario` int DEFAULT NULL,
   `descripcion` tinytext CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `calificacion` int DEFAULT NULL,
+  `calificacion` decimal(20,6) DEFAULT NULL,
   `fecha_comentario` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_comentario`),
   KEY `id_receta` (`id_receta`),
@@ -226,6 +226,39 @@ CREATE TABLE IF NOT EXISTS `favorito` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla pa_la_olla.favorito: ~0 rows (aproximadamente)
+
+-- Volcando estructura para procedimiento pa_la_olla.obtener_calificaciones_receta
+DROP PROCEDURE IF EXISTS `obtener_calificaciones_receta`;
+DELIMITER //
+CREATE PROCEDURE `obtener_calificaciones_receta`(
+	IN `p_id_receta` INT
+)
+BEGIN
+	SELECT COUNT(*) AS total_comentario,
+	AVG(c.calificacion) AS calificacion_promedio,
+	SUM(CASE WHEN c.calificacion BETWEEN 1 AND 1.9 THEN 1 ELSE 0 END) AS una_estrella,
+	SUM(CASE WHEN c.calificacion BETWEEN 2 AND 2.9 THEN 1 ELSE 0 END) AS dos_estrellas,
+	SUM(CASE WHEN c.calificacion BETWEEN 3 AND 3.9 THEN 1 ELSE 0 END) AS tres_estrellas,
+	SUM(CASE WHEN c.calificacion BETWEEN 4 AND 4.9 THEN 1 ELSE 0 END) AS cuatro_estrellas,
+	SUM(CASE WHEN c.calificacion = 5 THEN 1 ELSE 0 END) AS cinco_estrellas
+	FROM comentario c 
+	WHERE c.id_receta = p_id_receta;
+END//
+DELIMITER ;
+
+-- Volcando estructura para procedimiento pa_la_olla.obtener_comentarios_receta
+DROP PROCEDURE IF EXISTS `obtener_comentarios_receta`;
+DELIMITER //
+CREATE PROCEDURE `obtener_comentarios_receta`(
+	IN `p_id_receta` INT
+)
+BEGIN
+	SELECT u.id_usuario, u.nombre_usuario, c.descripcion, c.calificacion, c.fecha_comentario
+	FROM comentario c 
+	left JOIN usuarios u ON c.id_usuario = u.id_usuario
+	WHERE c.id_receta = p_id_receta;
+END//
+DELIMITER ;
 
 -- Volcando estructura para procedimiento pa_la_olla.obtener_detalles_pedido
 DROP PROCEDURE IF EXISTS `obtener_detalles_pedido`;

@@ -3,19 +3,7 @@ import { Link } from "react-router-dom";
 const Perfil = () => {
   return (
     <div className="min-h-screen bg-neutral-50 text-rose-900">
-      {/* Encabezado */}
-      <header className="sticky top-0 bg-white/80 backdrop-blur border-b border-gray-200 z-50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <Link to="/" className="flex items-center gap-2 font-bold hover:opacity-80">
-            ←
-            <span>Pa' la olla</span>
-          </Link>
-          <button className="border border-rose-900 px-4 py-2 rounded hover:bg-rose-900 hover:text-white">
-            Cerrar Sesión
-          </button>
-        </div>
-      </header>
-
+     
       {/* Perfil principal */}
       <section className="max-w-7xl mx-auto px-4 py-8 text-center">
         <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-3xl font-bold">
@@ -99,13 +87,6 @@ const Perfil = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="bg-rose-900 text-white py-8 mt-16 text-center">
-        <h3 className="text-xl font-bold mb-2">Pa' la olla</h3>
-        <p className="text-white/80">No lo pienses, no batalles... directo pa la olla sin detalles</p>
-        <p className="text-white/60 mt-4">&copy; 2024 Pa' la olla. Todos los derechos reservados.</p>
-      </footer>
     </div>
   );
 };

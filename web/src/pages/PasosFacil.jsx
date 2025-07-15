@@ -3,15 +3,6 @@ import { Link } from "react-router-dom";
 const Calentar = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-yellow-50 to-yellow-100 text-rose-900 flex flex-col">
-      {/* Encabezado */}
-      <header className="w-full bg-white/90 backdrop-blur border-b border-gray-200 py-4 px-6 flex items-center justify-between sticky top-0 z-50">
-        <Link to="/" className="text-lg font-bold flex items-center gap-2 hover:opacity-80">
-          🍲 <span>Pa' la olla</span>
-        </Link>
-        <span className="bg-yellow-400 text-white text-xs font-medium px-3 py-1 rounded-full">
-          Solo Calentar
-        </span>
-      </header>
 
       {/* Contenido */}
       <main className="flex-grow px-4 py-10 max-w-2xl mx-auto">
@@ -93,15 +84,6 @@ const Calentar = () => {
           </Link>
         </div>
       </main>
-
-      {/* Footer */}
-      <footer className="bg-rose-900 text-white py-8 text-center">
-        <h3 className="text-xl font-bold mb-2">Pa’ la olla</h3>
-        <p className="text-white/80">
-          No lo pienses, no batalles... directo pa la olla sin detalles
-        </p>
-        <p className="text-white/60 mt-4">&copy; 2024 Pa’ la olla. Todos los derechos reservados.</p>
-      </footer>
     </div>
   );
 };

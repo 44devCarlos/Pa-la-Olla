@@ -3,6 +3,8 @@ import Home from "./pages/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Perfil from "./pages/Perfil";
+import PasosFacil from "./pages/PasosFacil";
+import PasosAvanzados from "./pages/PasosAvanzados";
 
 function App() {
 	return (
@@ -11,6 +13,8 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Home />} />
 				<Route path="/Perfil" element={<Perfil />} />
+				<Route path="/PasosFacil" element={<PasosFacil />} />
+				<Route path="/PasosAvanzados" element={<PasosAvanzados />} />
 			</Routes>
 			<Footer />
 		</BrowserRouter>

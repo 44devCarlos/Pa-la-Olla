@@ -4,7 +4,7 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-amber-50 flex flex-col items-center justify-center">
       <div className="w-full max-w-md px-6">
         <div className="flex flex-col items-center mb-6">
-          <button className="self-start text-sm text-red-800 mb-2">&larr; Volver</button>
+          <button className="self-start text-sm text-red-800 mb-2" onClick={() => window.location.href = '/'}>&larr; Volver</button>
           <img src={logoPaLaOlla} alt="Logo Pa' la olla" className="w-16 h-16 mb-2" />
           <h1 className="text-2xl font-bold text-red-800">Pa' la olla</h1>
           <p className="text-base text-red-700 mt-2">Iniciar Sesión</p>
@@ -51,9 +51,6 @@ export default function Login() {
               Regístrate aquí
             </a>
           </p>
-          <div className="text-center text-xs text-yellow-700 mt-2 bg-yellow-100 rounded p-2">
-            Demo: Usa cualquier email y contraseña de 6+ caracteres
-          </div>
         </div>
       </div>
     </div>

@@ -26,12 +26,12 @@ function Header({ user }) {
         ) : (
           // Usuario no autenticado
           <>
-            <button className="flex items-center gap-2 px-4 py-2 border border-orange-600 rounded-md text-orange-600 hover:bg-orange-50 font-semibold transition-all duration-150">
+            <button  className="flex items-center gap-2 px-4 py-2 border border-orange-600 rounded-md text-orange-600 hover:bg-orange-50 font-semibold transition-all duration-150" onClick={() => window.location.href = '/login'}>
               <span className="text-lg">↦</span>
-              Iniciar Sesión
+                Iniciar Sesión
             </button>
 
-            <button className="bg-[#e91e63] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#c2185b] transition-colors duration-150">
+            <button className="bg-[#e91e63] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#c2185b] transition-colors duration-150"onClick={() => window.location.href = '/Register'}>
               Registrarse
             </button>
           </>

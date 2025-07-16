@@ -1,7 +1,7 @@
 import logoPaLaOlla from "../assets/img/logo.png";
 function Footer() {
     return (
-    <footer className="bg-[#860000] text-white py-10 px-6">
+    <footer className="bg-[#860000] text-white py-4 px-6">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
         {/* Columna 1: Logo y descripción */}
         <div>

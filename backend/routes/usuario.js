@@ -6,7 +6,8 @@ export const crearUsuarioRouter = ({ usuarioModelo }) => {
 
 	const usuarioControlador = new ControladorUsuario({ usuarioModelo });
 
-	router.get("/", usuarioControlador.obtenerUsuarios());
+	router.post("/agregarUsuarios", usuarioControlador.agregarUsuarios);
+	//router.get("/", usuarioControlador.obtenerUsuarios());
 
 	return router;
 };

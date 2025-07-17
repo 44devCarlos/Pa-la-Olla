@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const RecetaCompleta = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-yellow-50 to-yellow-100 text-rose-900 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-white via-white-50 to-white-100 text-rose-900 flex flex-col">
 
       {/* Main */}
       <main className="flex-grow px-4 py-10 max-w-5xl mx-auto space-y-8">

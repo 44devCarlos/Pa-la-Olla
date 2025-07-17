@@ -8,6 +8,7 @@ import PasosFacil from "./pages/PasosFacil";
 import PasosAvanzados from "./pages/PasosAvanzados";
 import Home from "./pages/Home";
 import Descripcion from "./pages/Descripcion";
+import EditarPerfil from "./pages/EditarPerfil";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/Perfil" element={<Perfil />} />
+        <Route path="/EditarPerfil" element={<EditarPerfil />} />
         <Route path="/PasosFacil" element={<PasosFacil />} />
         <Route path="/PasosAvanzados" element={<PasosAvanzados />} />
         <Route path="/descripcion/:nombreReceta" element={<Descripcion />} />

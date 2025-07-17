@@ -83,11 +83,6 @@ export default function Login() {
 								</Text>
 							</TouchableOpacity>
 						</Text>
-						<View style={styles.demoMessageContainer}>
-							<Text style={styles.demoMessageText}>
-								Demo: Usa cualquier email y contraseña de 6+ caracteres
-							</Text>
-						</View>
 					</View>
 				</View>
 			</ScrollView>
@@ -206,19 +201,5 @@ const styles = StyleSheet.create({
 		color: '#DC2626', // red-600
 		fontWeight: '500', // font-medium
 		// React Native no tiene un "a" tag, así que usamos Text y TouchableOpacity para simular el enlace
-	},
-	demoMessageContainer: {
-		textAlign: 'center', // text-center (aunque Text no soporta esto directamente, lo aplica al contenido)
-		fontSize: 12, // text-xs
-		color: '#A16207', // yellow-700
-		marginTop: 8, // mt-2
-		backgroundColor: '#FEFCE8', // yellow-100
-		borderRadius: 4, // rounded
-		padding: 8, // p-2
-	},
-	demoMessageText: {
-		fontSize: 12,
-		color: '#A16207',
-		textAlign: 'center', // Aquí se aplica el textAlign
 	}
 });

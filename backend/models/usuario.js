@@ -22,20 +22,32 @@ export class ModeloUsuario {
 
     static async consultarUsuarios(usuario) {
         // eslint-disable-next-line no-unused-vars
-        const [result] = await connection.query("Call VerificarUsuario(?, ?)", [
+        const [result] = await connection.query("Call verificar_usuario(?, ?)", [
             usuario.email,
-            usuario.contrasena,
+            usuario.password,
         ]);
         return result[0];
     }
 
-    static async actualizarUsuarios(usuario) {
-        console.log(usuario);
-        // eslint-disable-next-line no-unused-vars
-        const [result] = await connection.query(
-            "Call ActualizarUsuario(?, ?, ?)",
-            [usuario.nombre, usuario.contrasena, usuario.email],
-        );
-        return result[0];
-    }
+   static async actualizarUsuarios(usuario) {
+    console.log(usuario);
+
+    // Si la contraseña está vacía, enviamos NULL
+    const password = usuario.password?.trim() === "" ? null : usuario.password;
+
+    const [result] = await connection.query(
+        "CALL actualizar_usuario(?, ?, ?, ?, ?, ?)",
+        [
+            usuario.id_usuario,
+            usuario.nombre,
+            usuario.email,
+            usuario.telefono,
+            usuario.direccion,
+            password,
+        ]
+    );
+
+    // Devuelve el primer resultado
+    return result[0];
+  }
 }

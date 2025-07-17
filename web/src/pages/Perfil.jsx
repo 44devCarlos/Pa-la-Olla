@@ -1,16 +1,28 @@
 import { Link } from "react-router-dom";
-
+import iconoUsuario from "../assets/img/user.png";
+import { useEffect, useState } from "react";
 const Perfil = () => {
+  const [user, setUser] = useState(null);
+  
+    useEffect(() => {
+      const usuarioGuardado = localStorage.getItem("usuario");
+      if (usuarioGuardado) {
+        setUser(JSON.parse(usuarioGuardado));
+      }
+    }, []);
   return (
-    <div className="min-h-screen bg-neutral-50 text-rose-900">
+    <div className="min-h-screen bg-[#FFF1E7] text-rose-900">
      
       {/* Perfil principal */}
       <section className="max-w-7xl mx-auto px-4 py-8 text-center">
         <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 text-white text-3xl font-bold">
-          JR
+           <img
+              src={iconoUsuario}
+              alt="Usuario"
+              className="w-20 h-20 "
+            />
         </div>
-        <h1 className="text-3xl font-bold mb-2">Jaider Rico</h1>
-        <p className="text-rose-900/70 mb-4">Miembro desde 1 de enero de 2024</p>
+        <h1 className="text-3xl font-bold mb-2">{user?.nombre_usuario || "Usuario"}</h1>
         <span className="inline-block bg-yellow-500 text-white px-3 py-1 rounded text-sm">
           Cliente Activo
         </span>
@@ -23,10 +35,9 @@ const Perfil = () => {
           {/* Información personal */}
           <div className="bg-white border border-gray-200 rounded-lg p-6 shadow space-y-4">
             <h2 className="text-lg font-semibold">Información Personal</h2>
-            <p className="text-sm">Correo: jaider@example.com</p>
-            <p className="text-sm">Teléfono: 12345678</p>
-            <p className="text-sm">Dirección: Ciudad de Panamá</p>
-            <p className="text-sm">Miembro desde 1 de enero de 2024</p>
+            <p className="text-sm">correo: {user?.email || "Usuario@example.com"}</p>
+            <p className="text-sm">Teléfono: {user?.telefono || "123-456"}</p>
+            <p className="text-sm">Dirección: {user?.direccion || "Ciudad de Panamá"}</p>
           </div>
 
           {/* Estadísticas */}
@@ -59,8 +70,10 @@ const Perfil = () => {
                   <p className="text-sm text-rose-900/70">Pedido #PA001 • 15 de enero de 2024</p>
                 </div>
                 <div className="flex gap-3 items-center">
-                  <span className="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Entregado</span>
-                  <button className="border border-orange-500 text-orange-500 px-3 py-1 rounded text-sm hover:bg-orange-500 hover:text-white">
+                   <button className="border cursor-pointer bg-orange-500 text-white border-orange-500 px-3 py-1 rounded text-sm  hover:bg-rose-900 hover:text-white">
+                    Ver Receta
+                  </button>
+                  <button className="border cursor-pointer bg-orange-500 text-white border-orange-500 px-3 py-1 rounded text-sm  hover:bg-rose-900 hover:text-white">
                     Ver Detalles
                   </button>
                 </div>
@@ -68,7 +81,7 @@ const Perfil = () => {
               {/* Puedes duplicar este bloque para más pedidos */}
             </div>
             <div className="text-center mt-6">
-              <button className="border border-rose-900 text-rose-900 px-4 py-2 rounded hover:bg-rose-900 hover:text-white">
+              <button className="border cursor-pointer  bg-orange-500 text-white px-4 py-2 rounded hover:bg-rose-900">
                 Ver Todos los Pedidos
               </button>
             </div>
@@ -77,12 +90,12 @@ const Perfil = () => {
           {/* Botones de acción */}
           <div className="grid md:grid-cols-2 gap-4">
             <Link to="/">
-              <button className="w-full bg-orange-500 text-white px-4 py-2 rounded hover:bg-rose-900">
+              <button className="w-full cursor-pointer bg-orange-500 text-white px-4 py-2 rounded hover:bg-rose-900">
                 Explorar Recetas
               </button>
             </Link>
-            <button className="w-full border border-pink-500 text-pink-500 px-4 py-2 rounded hover:bg-pink-500 hover:text-white">
-              Editar Perfil
+            <button className="w-full cursor-pointer bg-orange-500 text-white px-4 py-2 rounded hover:bg-rose-900" onClick={() => (window.location.href = "/EditarPerfil")}>
+                Editar Perfil
             </button>
           </div>
         </div>

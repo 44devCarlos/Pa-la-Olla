@@ -33,8 +33,8 @@ function PrincipalesRecetas({ recetasPrincipales }) {
 
             <div className="p-4 transition-transform duration-300 group-hover:-translate-y-2">
               <h3 className="font-semibold mt-2 text-red-700">{receta.nombre_receta}</h3>
-              <p className="text-sm text-gray-500">{receta.descripcion_receta}</p>
-              <p className="mt-2 text-red-600 font-bold">${receta.rango_precio}</p>
+              <p className="text-sm text-gray-500 line-clamp-2">{receta.descripcion_receta}</p>
+              <p className="mt-2 text-red-600 font-bold">{receta.rango_precio}</p>
             </div>
           </div>
         ))}

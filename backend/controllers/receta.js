@@ -55,4 +55,35 @@ export class ControladorReceta {
 		);
 		return res.json(comentarios);
 	};
+
+	agregarComentario = async (req, res) => {
+		const { id_usuario, id_receta, descripcion, calificacion } = req.body;
+
+		if (!id_usuario || !id_receta || !descripcion || !calificacion) {
+			return res
+				.status(400)
+				.json({ error: "Todos los campos son requeridos" });
+		}
+
+		const resultado = await this.recetaModelo.AgregarComentario(
+			id_usuario,
+			id_receta,
+			descripcion,
+			calificacion
+		);
+		return res.json(resultado);
+	};
+
+	obtenerPrecioPorNiveles = async (req, res) => {
+		const { id_receta } = req.params;
+
+		if (!id_receta) {
+			return res.status(400).json({ error: "ID de receta requerido" });
+		}
+
+		const precios = await this.recetaModelo.ObtenerPrecioPorNiveles(
+			id_receta
+		);
+		return res.json(precios);
+	};
 }

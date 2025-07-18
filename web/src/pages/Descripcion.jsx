@@ -2,17 +2,75 @@ import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "../components/Card";
 import { Button } from "../components/button";
 import RatingBar from "../components/RatingBar";
+import StarRating from "../components/StarRating";
+import PaypalButton from "../components/PaypalButton";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { FaStar, FaTimes, FaPlus, FaMinus } from "react-icons/fa";
 
 export default function Descripcion() {
   const baseUrl = "http://localhost:3305/";
+  const usuario = JSON.parse(localStorage.getItem("usuario"));
   const location = useLocation();
   const navigate = useNavigate();
   const nombre_receta = useParams().nombreReceta;
   const { receta } = location.state || {};
   const [todasLasRecetas, setTodasLasRecetas] = useState([]);
   const [comentarios, setComentarios] = useState([]);
+  const [comentarioAgregado, setComentarioAgregado] = useState(false);
   const [calificaciones, setCalificaciones] = useState([]);
+  const [precio, setPrecio] = useState({});
+  const [valor, setValor] = useState([]);
+  const [mostrarOverlay, setMostrarOverlay] = useState(false);
+  const [posicion, setPosicion] = useState(0);
+  const [cantidad, setCantidad] = useState(2);
+  const [total, setTotal] = useState(0);
+  const isLogged = localStorage.getItem("usuario") !== null;
+  const [nivel, setNivel] = useState(null);
+  const aumentar = () => {
+    setCantidad((prev) => (prev < 6 ? prev + 2 : 6));
+    setPosicion((prev) => (prev < 2 ? prev + 1 : 2));
+  };
+  const disminuir = () => {
+    setCantidad((prev) => (prev > 2 ? prev - 2 : 2));
+    setPosicion((prev) => (prev > 0 ? prev - 1 : 0));
+  };
+
+  useEffect(() => {
+    if (!nivel) return;
+
+    if (nivel === "principiante") {
+      setTotal(Number(arrayPrecios[posicion][0].precio).toFixed(2));
+    } else if (nivel === "intermedio") {
+      setTotal(Number(arrayPrecios[posicion][1].precio).toFixed(2));
+    } else if (nivel === "avanzado") {
+      setTotal(Number(arrayPrecios[posicion][2].precio).toFixed(2));
+    }
+  }, [cantidad, posicion, nivel]);
+
+  useEffect(() => {
+    fetch(baseUrl + `receta/calificaciones/${receta.id_receta}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data) {
+          console.error("Receta no encontrada");
+          return;
+        }
+        setCalificaciones(data[0]);
+      })
+      .catch((err) => console.error("Error al obtener la receta:", err));
+
+    fetch(baseUrl + `receta/precio/${receta.id_receta}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!data) {
+          console.error("Receta no encontrada");
+          return;
+        }
+        setPrecio(data[0]);
+        console.log("Precio obtenido:", data[0]);
+      })
+      .catch((err) => console.error("Error al obtener el precio:", err));
+  }, [receta.id_receta]);
 
   useEffect(() => {
     fetch(baseUrl + "receta/todas")
@@ -21,7 +79,9 @@ export default function Descripcion() {
       .catch((err) =>
         console.error("Error al obtener todas las recetas:", err),
       );
+  }, []);
 
+  useEffect(() => {
     fetch(baseUrl + `receta/comentarios/${receta.id_receta}`)
       .then((res) => res.json())
       .then((data) => {
@@ -32,28 +92,35 @@ export default function Descripcion() {
         setComentarios(data);
       })
       .catch((err) => console.error("Error al obtener la receta:", err));
-
-    fetch(baseUrl + `receta/calificaciones/${receta.id_receta}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data) {
-          console.error("Receta no encontrada");
-          return;
-        }
-        setCalificaciones(data[0]);
-        console.log("Calificaciones:", data[0]);
-      })
-      .catch((err) => console.error("Error al obtener la receta:", err));
-  }, [receta.id_receta]);
+  }, [receta.id_receta, comentarioAgregado]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [nombre_receta]);
 
+  useEffect(() => {
+    if (mostrarOverlay) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [mostrarOverlay]);
+
   function barajear(recetas) {
     for (let i = recetas.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [recetas[i], recetas[j]] = [recetas[j], recetas[i]]; // intercambio
+      [recetas[i], recetas[j]] = [recetas[j], recetas[i]];
+    }
+
+    const index = recetas.findIndex(
+      (r) => r.nombre_receta === receta.nombre_receta,
+    );
+    if (index !== -1) {
+      recetas.splice(index, 1);
     }
     return recetas;
   }
@@ -62,15 +129,129 @@ export default function Descripcion() {
     navigate(`/descripcion/${receta.nombre_receta}`, { state: { receta } });
   };
 
+  const handleSubmit = () => {
+    if (!isLogged) {
+      alert("Debes iniciar sesión para dejar un comentario.");
+      return;
+    }
+    const comentarioInput = document.getElementById("cajaComentario");
+    const calificacionInput = valor;
+    if (!comentarioInput || !calificacionInput) {
+      alert("Por favor, completa todos los campos.");
+      return;
+    }
+    const comentario = comentarioInput.value;
+    const calificacion = calificacionInput;
+
+    const id_usuario = JSON.parse(localStorage.getItem("usuario")).id_usuario;
+    const id_receta = receta.id_receta;
+    fetch(baseUrl + "receta/agregarComentario", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id_usuario,
+        id_receta,
+        descripcion: comentario,
+        calificacion,
+      }),
+    })
+      .then((res) => res)
+      .then((data) => {
+        if (data.error) {
+          alert(data.error);
+          return;
+        }
+        alert("Comentario agregado exitosamente.");
+        comentarioInput.value = "";
+        setComentarioAgregado(true);
+        setComentarios((prev) => [...prev, data]);
+      })
+      .catch((err) => console.error("Error al agregar comentario:", err));
+  };
+
+  const handleAprobado = (details) => {
+    const id_usuario = JSON.parse(localStorage.getItem("usuario")).id_usuario;
+    const id_receta = receta.id_receta;
+    fetch(baseUrl + "pedido/registrarPedido", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id_usuario,
+        id_receta,
+        precio: details.purchase_units[0].amount.value,
+        direccion:
+          document.getElementById("direccion").value || "No especificada",
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.error) {
+          alert(data.error);
+          return;
+        }
+        alert("Orden realizada exitosamente.");
+      })
+      .catch((err) => console.error("Error al realizar la orden:", err));
+  };
+
+  const arrayPrecios = [
+    [
+      {
+        nivel: "Principiante",
+        precio: precio.principiante_2 || 0,
+      },
+      {
+        nivel: "Intermedio",
+        precio: precio.intermedio_2 || 0,
+      },
+      {
+        nivel: "Avanzado",
+        precio: precio.avanzado_2 || 0,
+      },
+    ],
+    [
+      {
+        nivel: "Principiante",
+        precio: precio.principiante_4 || 0,
+      },
+      {
+        nivel: "Intermedio",
+        precio: precio.intermedio_4 || 0,
+      },
+      {
+        nivel: "Avanzado",
+        precio: precio.avanzado_4 || 0,
+      },
+    ],
+    [
+      {
+        nivel: "Principiante",
+        precio: precio.principiante_6 || 0,
+      },
+      {
+        nivel: "Intermedio",
+        precio: precio.intermedio_6 || 0,
+      },
+      {
+        nivel: "Avanzado",
+        precio: precio.avanzado_6 || 0,
+      },
+    ],
+  ];
+
   return (
     <main>
-      <section className="mx-auto max-w-screen-xl p-2 md:p-6">
+      <section className="mx-auto max-w-screen-xl p-2 md:py-6">
         <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="flex h-[31rem] flex-col items-center justify-center">
             <img
               src={receta.imagen_receta}
-              alt="Sancocho Panameño"
-              className="h-[90%] w-full rounded-t-xl shadow-2xl"
+              alt={receta.nombre_receta}
+              className="aspect-video rounded-t-xl shadow-2xl"
             />
           </div>
 
@@ -95,6 +276,7 @@ export default function Descripcion() {
                 className={
                   "mt-4 h-10 w-full cursor-pointer rounded-md bg-[#F21B4E] font-semibold text-white hover:bg-red-800"
                 }
+                onClick={() => setMostrarOverlay(true)}
               >
                 🛒 Ordenar Ahora
               </Button>
@@ -158,7 +340,7 @@ export default function Descripcion() {
                 <h3 className="mb-1 text-lg font-bold text-red-900 group-hover:text-orange-700">
                   {r.nombre_receta}
                 </h3>
-                <p className="text-sm">{r.descripcion_receta}</p>
+                <p className="line-clamp-2 text-sm">{r.descripcion_receta}</p>
                 <div className="mt-2 flex flex-row justify-between">
                   <p className="text-sm">⏱️ {r.rango_tiempo}</p>
                   <p className="text-sm">⏱️ {r.rango_porciones}</p>
@@ -195,7 +377,10 @@ export default function Descripcion() {
                       )
                     : 0}
                 </p>
-                <p className="text-xs font-bold text-yellow-500">⭐⭐⭐⭐⭐</p>
+                <StarRating
+                  value={calificaciones.calificacion_promedio}
+                  readOnly
+                />
                 <p className="text-sm">
                   {calificaciones.total_comentario} reseñas
                 </p>
@@ -232,11 +417,29 @@ export default function Descripcion() {
 
           <div className="mb-6 w-[70%] rounded-xl bg-white p-6 shadow-lg">
             <h3 className="mb-2 text-xl font-medium">Deja tu Comentario</h3>
-            <textarea
-              className="mb-2 w-full rounded border p-2"
-              placeholder="Cuéntanos qué te pareció Sancocho Panameño..."
-            ></textarea>
-            <Button className={""}>Enviar Comentario</Button>
+            {isLogged == true ? (
+              <div className="flex flex-col gap-x-2">
+                <textarea
+                  id="cajaComentario"
+                  className="mb-2 w-full rounded border p-2"
+                  placeholder={`Cuéntanos qué te pareció ${receta.nombre_receta}...`}
+                />
+                <label className="font-semibold">Calificación:</label>
+                <StarRating onChange={(value) => setValor(value)} />
+                <Button
+                  className={
+                    "w-full cursor-pointer rounded-full bg-red-900 py-2 font-semibold text-white"
+                  }
+                  onClick={handleSubmit}
+                >
+                  Enviar Comentario
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-red-600">
+                Debes iniciar sesión para dejar un comentario.
+              </p>
+            )}
           </div>
 
           <div className="flex w-[70%] flex-col items-center justify-center space-y-4">
@@ -253,19 +456,33 @@ export default function Descripcion() {
                       className="h-10 w-10 rounded-full"
                     />
                     <div>
-                      <p className="font-semibold">{comentario.nombre}</p>
-                      <span className="text-sm">⭐⭐⭐⭐⭐</span>
+                      <p className="font-semibold">
+                        {comentario.nombre_usuario}
+                      </p>
+                      <span className="text-sm">
+                        <StarRating
+                          value={comentario.calificacion}
+                          readOnly
+                          tamaño={18}
+                        />
+                      </span>
                       <div className="w-20 text-left sm:w-auto">
                         <span className="ml-2 text-sm break-words whitespace-normal">
-                          {comentario.fecha_comentario}
+                          {new Date(
+                            comentario.fecha_comentario,
+                          ).toLocaleDateString()}
                         </span>
                       </div>
                     </div>
                   </div>
 
                   <span className="ml-10 inline-block rotate-90 rounded-full border border-yellow-500 px-2 py-3 text-sm transition-all duration-300 sm:ml-0 sm:-rotate-0 sm:py-0">
-                    <span className="inline-block -rotate-90 transition-all duration-300 sm:rotate-0">
-                      {parseFloat(comentario.calificacion).toFixed(1)}⭐
+                    <span className="inline-block w-10 -rotate-90 transition-all duration-300 sm:rotate-0 sm:py-1">
+                      {parseFloat(comentario.calificacion).toFixed(1)}
+                      <FaStar
+                        className="inline-block text-yellow-500"
+                        size={18}
+                      />
                     </span>
                   </span>
                 </div>
@@ -276,6 +493,224 @@ export default function Descripcion() {
             ))}
           </div>
         </section>
+      </section>
+      <section
+        className={`fixed inset-0 z-50 flex items-center justify-center bg-black/70 ${mostrarOverlay ? "block" : "hidden"}`}
+      >
+        <div className="relative flex h-140 w-125 flex-col overflow-y-scroll rounded-lg bg-white p-6 text-red-900">
+          <div className="mb-4">
+            <h1 className="font-bold">Ordenar {receta.nombre_receta}</h1>
+            <p>Completa tus datos para realizar el pedido</p>
+            <FaTimes
+              className="absolute top-2 right-2 cursor-pointer text-gray-700"
+              onClick={() => setMostrarOverlay(false)}
+            >
+              x
+            </FaTimes>
+          </div>
+
+          <div className="rounded-md border border-red-900/20 p-4 font-bold">
+            <div className="mb-6 flex items-center justify-between">
+              <h1>{receta.nombre_receta}</h1>
+            </div>
+            <div className="flex flex-col justify-between gap-y-2 font-normal">
+              <div className="flex items-center justify-between font-bold">
+                <p>Cantidad:</p>
+                <div className="flex items-center gap-x-2">
+                  <Button
+                    className={
+                      "group flex size-10 cursor-pointer items-center justify-center rounded-lg border border-orange-600/60 hover:bg-orange-600"
+                    }
+                    onClick={disminuir}
+                  >
+                    <FaMinus
+                      size={10}
+                      className="text-red-900 group-hover:text-white"
+                    />
+                  </Button>
+                  <p>{cantidad}</p>
+                  <Button
+                    className={
+                      "group flex size-10 cursor-pointer items-center justify-center rounded-lg border border-orange-600 hover:bg-orange-600"
+                    }
+                    onClick={aumentar}
+                  >
+                    <FaPlus
+                      size={10}
+                      className="text-red-900 group-hover:text-white"
+                    />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <form>
+            <div className="my-6">
+              <h1 className="mb-6 font-bold">
+                Nivel de Complejidad de Preparación
+              </h1>
+              <div className="flex w-full flex-col items-center justify-center px-2">
+                <div className="mb-4 flex h-16 w-full items-center space-x-3 px-2 text-red-900">
+                  <input
+                    className="group size-4 cursor-pointer accent-red-900"
+                    type="radio"
+                    name="complejidad"
+                    value="principiante"
+                    required
+                    onClick={() => {
+                      setNivel("principiante");
+                      setTotal(
+                        Number(arrayPrecios[posicion][0].precio).toFixed(2),
+                      );
+                    }}
+                  />
+                  <div className="flex h-full w-full items-center justify-between rounded-lg border border-red-900/20 px-2">
+                    <div className="flex w-full items-center space-x-3 px-3">
+                      <img src={receta.imagen} alt="" className="size-5" />
+                      <div className="flex flex-col">
+                        <p className="font-bold">Principiante</p>
+                        <p className="text-sm font-semibold">
+                          Preparación sencilla
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex">
+                      <p className="font-semibold text-orange-600">
+                        ${Number(arrayPrecios[posicion][0].precio).toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-4 flex h-16 w-full items-center space-x-3 px-2 text-red-900">
+                  <div>
+                    <input
+                      className="size-4 cursor-pointer accent-red-900"
+                      type="radio"
+                      name="complejidad"
+                      value="intermedio"
+                      required
+                      onClick={() => {
+                        setNivel("intermedio");
+                        setTotal(
+                          Number(arrayPrecios[posicion][1].precio).toFixed(2),
+                        );
+                      }}
+                    />
+                  </div>
+                  <div className="flex h-full w-full items-center justify-between rounded-lg border border-red-900/20 px-2">
+                    <div className="flex w-full items-center space-x-3 px-3">
+                      <img src={receta.imagen} alt="" className="size-5" />
+                      <div className="flex flex-col">
+                        <p className="font-bold">Intermedio</p>
+                        <p className="text-sm font-semibold">
+                          Preparación moderada
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex">
+                      <p className="font-semibold text-orange-600">
+                        ${Number(arrayPrecios[posicion][1].precio).toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-4 flex h-16 w-full items-center space-x-3 px-2 text-red-900">
+                  <div>
+                    <input
+                      className="size-4 cursor-pointer accent-red-900"
+                      type="radio"
+                      name="complejidad"
+                      value="avanzado"
+                      required
+                      onClick={() => {
+                        setNivel("avanzado");
+                        setTotal(
+                          Number(arrayPrecios[posicion][2].precio).toFixed(2),
+                        );
+                      }}
+                    />
+                  </div>
+                  <div className="flex h-full w-full items-center justify-between rounded-lg border border-red-900/20 px-2">
+                    <div className="flex w-full items-center space-x-3 px-3">
+                      <img src={receta.imagen} alt="" className="size-5" />
+                      <div className="flex flex-col">
+                        <p className="font-bold">Avanzado</p>
+                        <p className="text-sm font-semibold">
+                          Preparación avanzada
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex">
+                      <p className="font-semibold text-orange-600">
+                        ${Number(arrayPrecios[posicion][2].precio).toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mb-4 flex h-16 w-full items-center justify-between space-x-3 rounded-lg border border-red-900/20 px-2 text-red-900">
+                  <p className="font-semibold">Total de pedido:</p>
+                  <p className="text-xl font-bold text-orange-600">
+                    ${total || "0.00"}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mb-6 flex w-full flex-col items-center justify-between">
+              <h1 className="mb-6 w-full border-b border-red-900/20 pb-2 text-left font-bold">
+                Información de Contacto
+              </h1>
+              <div className="mb-10 flex h-10 w-full flex-col">
+                <label htmlFor="nombre" className="font-semibold">
+                  Nombre completo:
+                </label>
+                <input
+                  type="text"
+                  className="rounded-md border border-red-900/20 p-2"
+                  disabled
+                  value={usuario.nombre_usuario}
+                />
+              </div>
+              <div className="mb-10 flex h-10 w-full flex-col">
+                <label htmlFor="telefono" className="font-semibold">
+                  Teléfono:
+                </label>
+                <input
+                  type="tel"
+                  className="rounded-md border border-red-900/20 p-2"
+                  disabled
+                  value={usuario.telefono}
+                />
+              </div>
+              <div className="mb-10 flex h-10 w-full flex-col">
+                <label htmlFor="direccion" className="font-semibold">
+                  Dirección:
+                </label>
+                <input
+                  id="direccion"
+                  type="text"
+                  className="rounded-md border border-red-900/20 p-2"
+                  placeholder="Tu dirección"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className="bottom-6 flex w-full flex-col">
+              <PaypalButton
+                monto={total}
+                descripcion={`Pedido de ${receta.nombre_receta} para ${cantidad} personas`}
+                onSuccess={(details) => {
+                  handleAprobado(details);
+                  setMostrarOverlay(false);
+                }}
+              />
+            </div>
+          </form>
+        </div>
       </section>
     </main>
   );

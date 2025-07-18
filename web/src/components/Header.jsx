@@ -19,7 +19,7 @@ function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center px-6 py-4 bg-white shadow-sm">
+    <header className="flex justify-between items-center p-1 md:px-6 md:py-4 bg-white shadow-sm">
       {/* Logo y Nombre */}
       <div className="flex items-center gap-2">
         <img src={logoPaLaOlla} alt="Logo" className="w-6 h-6" />
@@ -31,7 +31,7 @@ function Header() {
         {user ? (
           // Usuario autenticado
           <>
-            <button className=" cursor-pointer flex items-center gap-2 border border-red-600 rounded-md px-4 py-2 transition-all duration-200 hover:bg-red-600 group" onClick={() => window.location.href = '/Perfil'}>
+            <button className="cursor-pointer flex items-center gap-2 border border-red-600 rounded-md px-4 py-2 transition-all duration-200 hover:bg-red-600 group" onClick={() => window.location.href = '/Perfil'}>
               <img
                 src={iconoUsuario}
                 alt="Usuario"

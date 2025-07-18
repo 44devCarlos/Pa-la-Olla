@@ -3,6 +3,7 @@ import express from "express";
 import { PORT } from "./config.js";
 import { crearRecetaRouter } from './routes/receta.js'
 import { crearUsuarioRouter } from './routes/usuario.js'
+import { crearPedidoRouter } from './routes/pedido.js'
 
 export const createApp = ({modelos}) => {
 	const app = express();
@@ -10,6 +11,7 @@ export const createApp = ({modelos}) => {
 	app.use(express.json());
 	app.use("/receta", crearRecetaRouter({ recetaModelo: modelos.ModeloReceta }));
 	app.use("/usuario", crearUsuarioRouter({usuarioModelo: modelos.ModeloUsuario}));
+	app.use("/pedido", crearPedidoRouter({pedidoModelo: modelos.ModeloPedido}));
 	
 
 	app.use((req, res) => {

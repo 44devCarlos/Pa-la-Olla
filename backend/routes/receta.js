@@ -12,6 +12,8 @@ export const crearRecetaRouter = ({ recetaModelo }) => {
     router.get("/todas", recetaControlador.obtenerTodasLasRecetas);
     router.get("/calificaciones/:id_receta", recetaControlador.obtenerCalificacionesPorReceta);
     router.get("/comentarios/:id_receta", recetaControlador.obtenerComentariosReceta);
+    router.post("/agregarComentario", recetaControlador.agregarComentario);
+    router.get("/precio/:id_receta", recetaControlador.obtenerPrecioPorNiveles);
     
 
     return router;

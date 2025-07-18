@@ -37,7 +37,7 @@ function FiltrosIngredientes({ onFiltrar }) {
               .then((data) => onFiltrar(data))
               .catch((err) => console.error("Error al filtrar:", err));
           }}
-          className="px-4 py-2 border border-red-600 text-red-600 rounded-full font-semibold hover:bg-red-600 hover:text-white transition"
+          className="px-4 py-2 border cursor-pointer border-red-600 text-red-600 rounded-full font-semibold hover:bg-red-600 hover:text-white transition"
         >
           {ing.ingrediente_principal}
         </button>

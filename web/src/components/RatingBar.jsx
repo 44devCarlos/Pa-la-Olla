@@ -1,4 +1,5 @@
 import React from "react";
+import { FaStar } from "react-icons/fa";
 
 export default function RatingBar({ stars, count, maxCount }) {
   const percentage = (count / maxCount) * 100;
@@ -6,7 +7,7 @@ export default function RatingBar({ stars, count, maxCount }) {
   return (
     <div className="flex items-center gap-x-2">
       <div className="flex w-full items-center justify-between">
-        <span className="pr-2">{stars}⭐</span>
+        <span className="pr-2 w-9">{stars}<FaStar className="text-yellow-500 inline-block"></FaStar></span>
         <div className="relative w-[5rem] md:w-[35rem]">
           <div
             style={{

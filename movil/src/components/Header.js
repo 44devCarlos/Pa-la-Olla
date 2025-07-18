@@ -9,15 +9,15 @@ const Header = () => (
                 source={require('../../assets/3d.png')} // Ruta del logo actualizada
                 style={styles.headerLogo}
             />
-            <Text style={styles.headerTitle}>Pa' la olla</Text>
+            <Text style={styles.headerTitle} numberOfLines={1} ellipsizeMode='tail'>Pa' la olla</Text>
         </View>
         <View style={styles.headerButtonsContainer}>
             <TouchableOpacity style={styles.loginButton}>
                 <Icon name="log-in" size={16} color="#f97316" />
-                <Text style={styles.loginButtonText}>Iniciar Sesión</Text>
+                <Text style={styles.loginButtonText}>Acceder</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.registerButton}>
-                <Text style={styles.registerButtonText}>Registrarse</Text>
+                <Text style={styles.registerButtonText}>Registrar</Text>
             </TouchableOpacity>
         </View>
     </View>
@@ -30,14 +30,14 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
         paddingTop: 40,
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
     },
     headerLogoContainer: { 
+        flex: 1, 
         flexDirection: 'row', 
         alignItems: 'center',
-        // Permitimos que el contenedor del logo se encoja si es necesario
-        flexShrink: 1, 
+        overflow: 'hidden',
+        marginRight: 8, 
     },
     headerLogo: { 
         width: 40, 
@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
     headerTitle: { 
         fontSize: 24, 
         fontWeight: 'bold', 
-        color: '#991b1b' 
+        color: '#991b1b',
+        flexShrink: 1,
     },
     headerButtonsContainer: { 
         flexDirection: 'row', 
@@ -67,7 +68,8 @@ const styles = StyleSheet.create({
     loginButtonText: { 
         color: '#f97316', 
         fontWeight: '600', 
-        marginLeft: 6 
+        marginLeft: 6,
+        fontSize: 14, 
     },
     registerButton: { 
         backgroundColor: '#ef4444', 
@@ -77,7 +79,8 @@ const styles = StyleSheet.create({
     },
     registerButtonText: { 
         color: '#ffffff', 
-        fontWeight: 'bold' 
+        fontWeight: 'bold',
+        fontSize: 14,
     },
 });
 

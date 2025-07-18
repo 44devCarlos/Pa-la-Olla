@@ -6,7 +6,7 @@ const Header = () => (
     <View style={styles.headerContainer}>
         <View style={styles.headerLogoContainer}>
             <Image
-                source={require('../../assets/3d.png')} // Asumiendo que tu logo se llama 'logo.png'
+                source={require('../../assets/3d.png')} // Ruta del logo actualizada
                 style={styles.headerLogo}
             />
             <Text style={styles.headerTitle}>Pa' la olla</Text>
@@ -35,7 +35,9 @@ const styles = StyleSheet.create({
     },
     headerLogoContainer: { 
         flexDirection: 'row', 
-        alignItems: 'center' 
+        alignItems: 'center',
+        // Permitimos que el contenedor del logo se encoja si es necesario
+        flexShrink: 1, 
     },
     headerLogo: { 
         width: 40, 
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     },
     headerButtonsContainer: { 
         flexDirection: 'row', 
-        alignItems: 'center' 
+        alignItems: 'center',
     },
     loginButton: { 
         flexDirection: 'row',
@@ -59,8 +61,8 @@ const styles = StyleSheet.create({
         borderColor: '#f97316',
         borderRadius: 12,
         paddingVertical: 10, 
-        paddingHorizontal: 16,
-        marginRight: 8,
+        paddingHorizontal: 12, 
+        marginRight: 6,
     },
     loginButtonText: { 
         color: '#f97316', 
@@ -71,7 +73,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#ef4444', 
         borderRadius: 12, 
         paddingVertical: 10, 
-        paddingHorizontal: 16,
+        paddingHorizontal: 12,
     },
     registerButtonText: { 
         color: '#ffffff', 

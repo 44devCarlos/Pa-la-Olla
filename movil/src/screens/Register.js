@@ -10,7 +10,7 @@ import {
 	Platform,
 	StyleSheet,
 } from 'react-native';
-import logoPaLaOlla from '../assets/icon.png'; // ajusta la ruta si es necesario
+import logoPaLaOlla from '../../assets/icon.png'; // ajusta la ruta si es necesario
 
 export default function Register() {
 	return (

@@ -4,9 +4,9 @@ export class ControladorPedido{
     }
     
     registrarPedido = async (req, res) => {
-        const { id_usuario, id_receta, precio, direccion } = req.body;
+        const { id_usuario, id_receta, orden_paypal, precio, direccion } = req.body;
 
-        if (!id_usuario || !id_receta || !precio || !direccion) {
+        if (!id_usuario || !id_receta || !orden_paypal || !precio || !direccion) {
             return res.status(400).json({ error: "Todos los campos son requeridos" });
         }
 
@@ -14,6 +14,7 @@ export class ControladorPedido{
             const resultado = await this.pedidoModelo.registrarPedido(
                 id_usuario,
                 id_receta,
+                orden_paypal,
                 precio,
                 direccion
             );

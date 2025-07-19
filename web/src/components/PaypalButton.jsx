@@ -17,8 +17,8 @@ export default function App({ monto, descripcion, onSuccess }) {
                 {
                   amount: {
                     value: monto,
-                    description: descripcion,
                   },
+                  description: descripcion,
                 },
               ],
             });
@@ -29,7 +29,7 @@ export default function App({ monto, descripcion, onSuccess }) {
             shape: "rect",
             label: "pay",
           }}
-          onApprove={ (data, actions) => {
+          onApprove={(data, actions) => {
             return actions.order.capture().then((details) => {
               onSuccess(details);
             });

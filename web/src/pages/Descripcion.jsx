@@ -9,7 +9,7 @@ import { FaStar, FaTimes, FaPlus, FaMinus } from "react-icons/fa";
 
 export default function Descripcion() {
   const baseUrl = "http://localhost:3305/";
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
+  const usuario = JSON.parse(localStorage.getItem("usuario")) || false;
   const location = useLocation();
   const navigate = useNavigate();
   const nombre_receta = useParams().nombreReceta;
@@ -24,8 +24,10 @@ export default function Descripcion() {
   const [posicion, setPosicion] = useState(0);
   const [cantidad, setCantidad] = useState(2);
   const [total, setTotal] = useState(0);
-  const isLogged = localStorage.getItem("usuario") !== null;
   const [nivel, setNivel] = useState(null);
+  const [direccion, setDireccion] = useState("");
+  const [formularioCompleto, setFormularioCompleto] = useState(false);
+
   const aumentar = () => {
     setCantidad((prev) => (prev < 6 ? prev + 2 : 6));
     setPosicion((prev) => (prev < 2 ? prev + 1 : 2));
@@ -45,6 +47,7 @@ export default function Descripcion() {
     } else if (nivel === "avanzado") {
       setTotal(Number(arrayPrecios[posicion][2].precio).toFixed(2));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cantidad, posicion, nivel]);
 
   useEffect(() => {
@@ -67,19 +70,21 @@ export default function Descripcion() {
           return;
         }
         setPrecio(data[0]);
-        console.log("Precio obtenido:", data[0]);
       })
       .catch((err) => console.error("Error al obtener el precio:", err));
-  }, [receta.id_receta]);
+  }, [receta.id_receta, comentarioAgregado]);
 
   useEffect(() => {
     fetch(baseUrl + "receta/todas")
       .then((res) => res.json())
-      .then((data) => setTodasLasRecetas(data))
+      .then((data) => {
+        setTodasLasRecetas(barajear(data));
+      })
       .catch((err) =>
         console.error("Error al obtener todas las recetas:", err),
       );
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [receta.id_receta]);
 
   useEffect(() => {
     fetch(baseUrl + `receta/comentarios/${receta.id_receta}`)
@@ -110,6 +115,20 @@ export default function Descripcion() {
     };
   }, [mostrarOverlay]);
 
+  useEffect(() => {
+    let verificar = false;
+    document.querySelectorAll("input[type='radio']").forEach((input) => {
+      if (input.checked) {
+        verificar = true;
+      }
+    });
+    if (direccion.trim() !== "" && verificar == true) {
+      setFormularioCompleto(true);
+    } else {
+      setFormularioCompleto(false);
+    }
+  }, [direccion, nivel, cantidad, total]);
+
   function barajear(recetas) {
     for (let i = recetas.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -130,7 +149,7 @@ export default function Descripcion() {
   };
 
   const handleSubmit = () => {
-    if (!isLogged) {
+    if (!usuario) {
       alert("Debes iniciar sesión para dejar un comentario.");
       return;
     }
@@ -143,7 +162,7 @@ export default function Descripcion() {
     const comentario = comentarioInput.value;
     const calificacion = calificacionInput;
 
-    const id_usuario = JSON.parse(localStorage.getItem("usuario")).id_usuario;
+    const id_usuario = usuario.id_usuario;
     const id_receta = receta.id_receta;
     fetch(baseUrl + "receta/agregarComentario", {
       method: "POST",
@@ -172,7 +191,7 @@ export default function Descripcion() {
   };
 
   const handleAprobado = (details) => {
-    const id_usuario = JSON.parse(localStorage.getItem("usuario")).id_usuario;
+    const id_usuario = usuario.id_usuario;
     const id_receta = receta.id_receta;
     fetch(baseUrl + "pedido/registrarPedido", {
       method: "POST",
@@ -182,6 +201,7 @@ export default function Descripcion() {
       body: JSON.stringify({
         id_usuario,
         id_receta,
+        orden_paypal: details.id,
         precio: details.purchase_units[0].amount.value,
         direccion:
           document.getElementById("direccion").value || "No especificada",
@@ -193,7 +213,15 @@ export default function Descripcion() {
           alert(data.error);
           return;
         }
-        alert("Orden realizada exitosamente.");
+        alert("Orden realizada exitosamente. Mira la receta en tu perfil.");
+        setDireccion("");
+        document.querySelectorAll("input[type='radio']").forEach((input) => {
+          input.checked = false;
+        });
+        setCantidad(2);
+        setPosicion(0);
+        setNivel(null);
+        setTotal(0);
       })
       .catch((err) => console.error("Error al realizar la orden:", err));
   };
@@ -324,7 +352,7 @@ export default function Descripcion() {
           Otras Recetas que te Podrían Gustar
         </h2>
         <section className="flex snap-x snap-mandatory items-center gap-x-4 overflow-x-scroll scroll-smooth transition-transform duration-300">
-          {barajear(todasLasRecetas).map((r, i) => (
+          {todasLasRecetas.slice(0, 4).map((r, i) => (
             <Card
               key={i}
               className="group w-[100%] flex-shrink-0 snap-center rounded-md p-4 transition-shadow duration-100 hover:shadow-xl/10 md:w-[35%]"
@@ -417,7 +445,7 @@ export default function Descripcion() {
 
           <div className="mb-6 w-[70%] rounded-xl bg-white p-6 shadow-lg">
             <h3 className="mb-2 text-xl font-medium">Deja tu Comentario</h3>
-            {isLogged == true ? (
+            {usuario ? (
               <div className="flex flex-col gap-x-2">
                 <textarea
                   id="cajaComentario"
@@ -652,7 +680,10 @@ export default function Descripcion() {
 
                 <div className="mb-4 flex h-16 w-full items-center justify-between space-x-3 rounded-lg border border-red-900/20 px-2 text-red-900">
                   <p className="font-semibold">Total de pedido:</p>
-                  <p className="text-xl font-bold text-orange-600">
+                  <p
+                    id="total-pedido"
+                    className="text-xl font-bold text-orange-600"
+                  >
                     ${total || "0.00"}
                   </p>
                 </div>
@@ -685,7 +716,7 @@ export default function Descripcion() {
                   value={usuario.telefono}
                 />
               </div>
-              <div className="mb-10 flex h-10 w-full flex-col">
+              <div className="flex h-10 w-full flex-col">
                 <label htmlFor="direccion" className="font-semibold">
                   Dirección:
                 </label>
@@ -695,20 +726,24 @@ export default function Descripcion() {
                   className="rounded-md border border-red-900/20 p-2"
                   placeholder="Tu dirección"
                   required
+                  value={direccion}
+                  onChange={(e) => setDireccion(e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="bottom-6 flex w-full flex-col">
-              <PaypalButton
-                monto={total}
-                descripcion={`Pedido de ${receta.nombre_receta} para ${cantidad} personas`}
-                onSuccess={(details) => {
-                  handleAprobado(details);
-                  setMostrarOverlay(false);
-                }}
-              />
-            </div>
+            {formularioCompleto && (
+              <div className="bottom-6 mt-10 flex w-full flex-col transition-all duration-300">
+                <PaypalButton
+                  monto={total}
+                  descripcion={`Pedido de ${receta.nombre_receta} para ${cantidad} personas`}
+                  onSuccess={(details) => {
+                    handleAprobado(details);
+                    setMostrarOverlay(false);
+                  }}
+                />
+              </div>
+            )}
           </form>
         </div>
       </section>

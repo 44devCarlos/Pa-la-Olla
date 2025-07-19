@@ -14,7 +14,7 @@ import {
 
 // Importa tu imagen, React Native lo maneja de forma diferente a la web
 // Asegúrate de que la ruta sea correcta desde este archivo
-import logoPaLaOlla from '../assets/icon.png';
+import logoPaLaOlla from '../../assets/icon.png';
 
 export default function Login() {
 	return (

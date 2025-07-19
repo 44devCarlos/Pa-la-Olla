@@ -51,7 +51,7 @@ agregarUsuarios = async (req, res) => {
     }
 };
 
-    actualizarUsuarios = async (req, res) => {
+  actualizarUsuarios = async (req, res) => {
     const usuario = req.body;
     try {
         const usuarios = await this.usuarioModelo.actualizarUsuarios(usuario);
@@ -62,4 +62,17 @@ agregarUsuarios = async (req, res) => {
         });
     }
 };
+  obtenerCantidadComentarios = async (req, res) => {
+		const { id_usuario } = req.params;
+
+		if (!id_usuario) {
+			return res.status(400).json({ error: "ID de usuario requerido" });
+		}
+
+		const comentarios = await this.usuarioModelo.obtenerCantidadComentarios(
+			id_usuario
+		);
+		return res.json(comentarios);
+	};
+
 }

@@ -2,7 +2,11 @@ import { Link } from "react-router-dom";
 import iconoUsuario from "../assets/img/user.png";
 import { useEffect, useState } from "react";
 const Perfil = () => {
+  const baseUrl = "http://localhost:3305/";
   const [user, setUser] = useState(null);
+  const [cantidadPedidos, setCantidadPedidos] = useState(0);
+  const [cantidadComentarios, setCantidadComentarios] = useState(0);
+  
   
     useEffect(() => {
       const usuarioGuardado = localStorage.getItem("usuario");
@@ -10,6 +14,35 @@ const Perfil = () => {
         setUser(JSON.parse(usuarioGuardado));
       }
     }, []);
+    useEffect(() => {
+  if (user?.id_usuario) {
+    fetchCantidadPedidos(user.id_usuario);
+    fetchCantidadComentarios(user.id_usuario);
+  }
+}, [user]);
+  const fetchCantidadPedidos = async (id_usuario) => {
+  try {
+    const response = await fetch(baseUrl+`pedido/pedidos/${id_usuario}`);
+    const data = await response.json();
+    if (data && data[0] && data[0].total_pedidos !== undefined) {
+      setCantidadPedidos(data[0].total_pedidos);
+    }
+  } catch (error) {
+    console.error("Error al obtener la cantidad de pedidos:", error);
+  }
+};
+
+const fetchCantidadComentarios = async (id_usuario) => {
+  try {
+    const response = await fetch(baseUrl+`usuario/comentarios/${id_usuario}`);
+    const data = await response.json();
+    if (data && data[0] && data[0].total_comentarios !== undefined) {
+      setCantidadComentarios(data[0].total_comentarios);
+    }
+  } catch (error) {
+    console.error("Error al obtener la cantidad de pedidos:", error);
+  }
+};
   return (
     <div className="min-h-screen bg-[#FFF1E7] text-rose-900">
      
@@ -37,7 +70,6 @@ const Perfil = () => {
             <h2 className="text-lg font-semibold">Información Personal</h2>
             <p className="text-sm">correo: {user?.email || "Usuario@example.com"}</p>
             <p className="text-sm">Teléfono: {user?.telefono || "123-456"}</p>
-            <p className="text-sm">Dirección: {user?.direccion || "Ciudad de Panamá"}</p>
           </div>
 
           {/* Estadísticas */}
@@ -45,15 +77,11 @@ const Perfil = () => {
             <h2 className="text-lg font-semibold">Estadísticas</h2>
             <div className="flex justify-between">
               <span>Pedidos</span>
-              <span className="border border-yellow-400 px-2 py-1 rounded text-sm">12</span>
-            </div>
-            <div className="flex justify-between">
-              <span>Favoritas</span>
-              <span className="border border-pink-400 px-2 py-1 rounded text-sm">8</span>
+              <span className="border border-yellow-400 px-2 py-1 rounded text-sm">{cantidadPedidos}</span>
             </div>
             <div className="flex justify-between">
               <span>Reseñas</span>
-              <span className="border border-yellow-400 px-2 py-1 rounded text-sm">5</span>
+              <span className="border border-yellow-400 px-2 py-1 rounded text-sm">{cantidadComentarios}</span>
             </div>
           </div>
         </div>

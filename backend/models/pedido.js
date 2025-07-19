@@ -8,4 +8,12 @@ export class ModeloPedido {
 		);
 		return resultado[0];
 	}
+
+	static async obtenerCantidadPedidos(id_usuario) {
+		const [resultado] = await connection.query(
+			`Call obtener_total_pedidos_usuario(?)`,
+			[id_usuario]
+		);
+		return resultado[0];
+	}
 }

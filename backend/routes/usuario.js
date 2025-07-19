@@ -9,6 +9,7 @@ export const crearUsuarioRouter = ({ usuarioModelo }) => {
 	router.post("/agregarUsuarios", usuarioControlador.agregarUsuarios);
 	router.post("/consultarUsuarios", usuarioControlador.consultarUsuarios);
 	router.post("/actualizarUsuarios", usuarioControlador.actualizarUsuarios);
+	router.get("/comentarios/:id_usuario", usuarioControlador.obtenerCantidadComentarios);
 	//router.get("/", usuarioControlador.obtenerUsuarios());
 
 	return router;

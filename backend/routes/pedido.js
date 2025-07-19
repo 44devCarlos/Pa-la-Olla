@@ -7,6 +7,7 @@ export const crearPedidoRouter = ({ pedidoModelo }) => {
 	const controladorPedido = new ControladorPedido({ pedidoModelo });
 
 	router.post("/registrarPedido", controladorPedido.registrarPedido);
+	router.get("/pedidos/:id_usuario", controladorPedido.obtenerCantidadPedidos);
 
 	return router;
 };

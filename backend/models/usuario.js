@@ -10,11 +10,19 @@ export class ModeloUsuario {
         return usuarios;
     }
 
+      static async obtenerCantidadComentarios(id_usuario) {
+        const [resultado] = await connection.query(
+			`Call obtener_total_comentarios_usuario(?)`,
+			[id_usuario]
+		);
+		return resultado[0];
+    }
+
     static async agregarUsuarios(usuario) {
         // eslint-disable-next-line no-unused-vars
         const [result] = await connection.query(
-            "Call registrar_usuario(?, ?, ?, ?, ?)",
-            [usuario.nombre, usuario.email, usuario.password, usuario.telefono, usuario.direccion],
+            "Call registrar_usuario(?, ?, ?, ?)",
+            [usuario.nombre, usuario.email, usuario.password, usuario.telefono],
         );
         return result[0];
     }
@@ -36,13 +44,12 @@ export class ModeloUsuario {
     const password = usuario.password?.trim() === "" ? null : usuario.password;
 
     const [result] = await connection.query(
-        "CALL actualizar_usuario(?, ?, ?, ?, ?, ?)",
+        "CALL actualizar_usuario(?, ?, ?, ?, ?)",
         [
             usuario.id_usuario,
             usuario.nombre,
             usuario.email,
             usuario.telefono,
-            usuario.direccion,
             password,
         ]
     );

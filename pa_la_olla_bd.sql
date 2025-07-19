@@ -28,7 +28,6 @@ CREATE PROCEDURE `actualizar_usuario`(
 	IN `p_nombre_usuario` VARCHAR(100),
 	IN `p_email` VARCHAR(255),
 	IN `p_telefono` VARCHAR(20),
-	IN `p_direccion` VARCHAR(255),
 	IN `p_contrasena` VARCHAR(225)
 )
 BEGIN
@@ -55,15 +54,13 @@ BEGIN
         SET nombre_usuario = p_nombre_usuario,
             email = IF(p_email IS NOT NULL AND p_email != '', p_email, email_actual),
             telefono = p_telefono,
-            direccion = p_direccion,
             contrasena = SHA2(p_contrasena, 256)
         WHERE id_usuario = p_id_usuario;
     ELSE
         UPDATE usuarios
         SET nombre_usuario = p_nombre_usuario,
             email = IF(p_email IS NOT NULL AND p_email != '', p_email, email_actual),
-            telefono = p_telefono,
-            direccion = p_direccion
+            telefono = p_telefono
         WHERE id_usuario = p_id_usuario;
     END IF;
 END//
@@ -179,11 +176,14 @@ CREATE TABLE IF NOT EXISTS `comentario` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `FK_comentario_receta` FOREIGN KEY (`id_receta`) REFERENCES `receta` (`id_receta`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_comentario_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla pa_la_olla.comentario: ~0 rows (aproximadamente)
 INSERT INTO `comentario` (`id_comentario`, `id_receta`, `id_usuario`, `descripcion`, `calificacion`, `fecha_comentario`) VALUES
-	(8, 1, 9, 'a', 4.500000, '2025-07-18 06:03:19');
+	(8, 1, 9, 'a', 4.500000, '2025-07-18 06:03:19'),
+	(9, 3, 11, 'Sabroso', 4.000000, '2025-07-18 18:35:28'),
+	(10, 3, 9, 'Me encanto', 3.500000, '2025-07-18 21:58:28'),
+	(11, 3, 10, 'Excelente', 5.000000, '2025-07-18 22:00:31');
 
 -- Volcando estructura para procedimiento pa_la_olla.editar_especificacion
 DROP PROCEDURE IF EXISTS `editar_especificacion`;
@@ -408,6 +408,19 @@ BEGIN
 END//
 DELIMITER ;
 
+-- Volcando estructura para procedimiento pa_la_olla.obtener_total_comentarios_usuario
+DROP PROCEDURE IF EXISTS `obtener_total_comentarios_usuario`;
+DELIMITER //
+CREATE PROCEDURE `obtener_total_comentarios_usuario`(
+	IN `p_id_usuario` INT
+)
+BEGIN
+    SELECT COUNT(*) AS total_comentarios
+    FROM comentario
+    WHERE id_usuario = p_id_usuario;
+END//
+DELIMITER ;
+
 -- Volcando estructura para procedimiento pa_la_olla.obtener_total_favoritos_usuario
 DROP PROCEDURE IF EXISTS `obtener_total_favoritos_usuario`;
 DELIMITER //
@@ -425,11 +438,11 @@ DELIMITER ;
 DROP PROCEDURE IF EXISTS `obtener_total_pedidos_usuario`;
 DELIMITER //
 CREATE PROCEDURE `obtener_total_pedidos_usuario`(
-    IN p_id_usuario INT
+	IN `p_id_usuario` INT
 )
 BEGIN
     SELECT COUNT(*) AS total_pedidos
-    FROM pedidos
+    FROM pedido
     WHERE id_usuario = p_id_usuario;
 END//
 DELIMITER ;
@@ -462,7 +475,7 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   KEY `id_espec` (`id_receta`) USING BTREE,
   CONSTRAINT `FK_pedido_receta` FOREIGN KEY (`id_receta`) REFERENCES `receta` (`id_receta`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_pedido_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla pa_la_olla.pedido: ~1 rows (aproximadamente)
 INSERT INTO `pedido` (`id_pedido`, `id_usuario`, `id_receta`, `precio`, `direccion`, `fecha_pedido`) VALUES
@@ -544,8 +557,7 @@ CREATE PROCEDURE `registrar_usuario`(
 	IN `p_nombre_usuario` VARCHAR(100),
 	IN `p_email` VARCHAR(255),
 	IN `p_contrasena` VARCHAR(255),
-	IN `p_telefono` VARCHAR(20),
-	IN `p_direccion` VARCHAR(255)
+	IN `p_telefono` VARCHAR(20)
 )
 BEGIN
     -- Primero verificamos si el correo ya existe
@@ -556,8 +568,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Este email ya está registrado';
     ELSE
         -- Insertamos el nuevo usuario
-        INSERT INTO usuarios (nombre_usuario, email, contrasena, telefono, direccion)
-        VALUES (p_nombre_usuario, p_email, SHA2(p_contrasena, 256), p_telefono, p_direccion);
+        INSERT INTO usuarios (nombre_usuario, email, contrasena, telefono)
+        VALUES (p_nombre_usuario, p_email, SHA2(p_contrasena, 256), p_telefono);
     END IF;
 END//
 DELIMITER ;
@@ -569,15 +581,15 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `nombre_usuario` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `telefono` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `direccion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `contrasena` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`id_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Volcando datos para la tabla pa_la_olla.usuarios: ~2 rows (aproximadamente)
-INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `email`, `telefono`, `direccion`, `contrasena`) VALUES
-	(9, 'José Macre', 'macremoises@gmail.com', '6845-2603', 'Don Bosco', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92'),
-	(10, 'Carlos Rodríguez', 'carv2012@gmail.com', '61744815', 'El Valle San Isidro Sector 2', 'ac9689e2272427085e35b9d3e3e8bed88cb3434828b43b86fc0596cad4c6e270');
+INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `email`, `telefono`, `contrasena`) VALUES
+	(9, 'José Macre', 'macremoises@gmail.com', '6845-2603', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92'),
+	(10, 'Carlos Rodríguez', 'carv2012@gmail.com', '61744815', 'ac9689e2272427085e35b9d3e3e8bed88cb3434828b43b86fc0596cad4c6e270'),
+	(11, 'Neymar ', 'enejota@gmail.com', '66753846', '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414');
 
 -- Volcando estructura para procedimiento pa_la_olla.verificar_usuario
 DROP PROCEDURE IF EXISTS `verificar_usuario`;

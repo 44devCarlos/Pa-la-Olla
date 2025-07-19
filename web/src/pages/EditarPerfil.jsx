@@ -23,7 +23,6 @@ export default function EditarPerfil() {
       nombre: formData.get("nombre"),
       email: formData.get("email"),
       telefono: formData.get("telefono"),
-      direccion: formData.get("direccion"),
     };
 
     // Solo incluir la contraseña si fue escrita
@@ -56,7 +55,6 @@ export default function EditarPerfil() {
         nombre_usuario: data.nombre,
         email: data.email,
         telefono: data.telefono,
-        direccion: data.direccion,
         password : data.password,
       };
 
@@ -139,20 +137,6 @@ export default function EditarPerfil() {
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-300"
               />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-red-800">
-                Ubicación *
-              </label>
-              <input
-                defaultValue={user?.direccion}
-                name="direccion"
-                type="text"
-                placeholder="Ej. Don Bosco/Robles Sur Calle 18"
-                required
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-300"
-              />
-            </div>
-
             <button
               type="submit"
               className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition"

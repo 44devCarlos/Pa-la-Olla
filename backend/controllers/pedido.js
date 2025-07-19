@@ -28,4 +28,17 @@ export class ControladorPedido{
             });
         }
     }
+
+    obtenerCantidadPedidos = async (req, res) => {
+		const { id_usuario } = req.params;
+
+		if (!id_usuario) {
+			return res.status(400).json({ error: "ID de usuario requerido" });
+		}
+
+		const pedidos = await this.pedidoModelo.obtenerCantidadPedidos(
+			id_usuario
+		);
+		return res.json(pedidos);
+	};
 }

@@ -11,7 +11,6 @@ export default function Register() {
       email: formData.get("email"),
       telefono: formData.get("telefono"),
       password: formData.get("password"),
-      direccion: formData.get("direccion"),
     };
 
     console.log("Datos enviados:", data);
@@ -106,20 +105,6 @@ export default function Register() {
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-300"
               />
             </div>
-
-            <div>
-              <label className="block text-sm font-medium text-red-800">
-                Ubicación *
-              </label>
-              <input
-                name="direccion"
-                type="text"
-                placeholder="Ej. Don Bosco/Robles Sur Calle 18"
-                required
-                className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-300"
-              />
-            </div>
-
             <button
               type="submit"
               className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition"

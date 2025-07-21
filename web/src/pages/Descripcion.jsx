@@ -203,6 +203,8 @@ export default function Descripcion() {
         id_receta,
         orden_paypal: details.id,
         precio: details.purchase_units[0].amount.value,
+        receta_nivel: nivel,
+        receta_cantidad: cantidad,
         direccion:
           document.getElementById("direccion").value || "No especificada",
       }),

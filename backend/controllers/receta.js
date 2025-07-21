@@ -86,4 +86,15 @@ export class ControladorReceta {
 		);
 		return res.json(precios);
 	};
+
+	verReceta = async (req, res) => {
+		const { id_receta } = req.params;
+
+		if (!id_receta) {
+			return res.status(400).json({ error: "ID de receta requerido" });
+		}
+
+		const receta = await this.recetaModelo.VerReceta(id_receta);
+		return res.json(receta);
+	};
 }

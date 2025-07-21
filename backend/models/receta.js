@@ -67,4 +67,12 @@ export class ModeloReceta {
 		);
 		return precios[0];
 	}
+
+	static async VerReceta(id_receta){
+		const [receta] = await connection.query(
+			`Call ver_receta(?)`,
+			[id_receta]
+		);
+		return receta[0];
+	}
 }

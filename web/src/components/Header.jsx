@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import logoPaLaOlla from "../assets/img/logo.png";
 import iconoUsuario from "../assets/img/user.png";
+import { Link } from "react-router-dom";
 
 function Header() {
   const [user, setUser] = useState(null);
@@ -19,11 +20,13 @@ function Header() {
   };
 
   return (
-    <header className="flex justify-between items-center p-1 md:px-6 md:py-4 bg-white shadow-sm">
+    <header className="flex items-center justify-between bg-white p-1 shadow-sm md:px-6 md:py-4">
       {/* Logo y Nombre */}
       <div className="flex items-center gap-2">
-        <img src={logoPaLaOlla} alt="Logo" className="w-6 h-6" />
-        <span className="font-bold text-red-800 text-lg">Pa' la olla</span>
+        <Link to="/" className="flex items-center gap-2">
+          <img src={logoPaLaOlla} alt="Logo" className="h-6 w-6" />
+          <span className="text-lg font-bold text-red-800">Pa' la olla</span>
+        </Link>
       </div>
 
       {/* Botones dependiendo del estado de sesión */}
@@ -31,11 +34,14 @@ function Header() {
         {user ? (
           // Usuario autenticado
           <>
-            <button className="cursor-pointer flex items-center gap-2 border border-red-600 rounded-md px-4 py-2 transition-all duration-200 hover:bg-red-600 group" onClick={() => window.location.href = '/Perfil'}>
+            <button
+              className="group flex cursor-pointer items-center gap-2 rounded-md border border-red-600 px-4 py-2 transition-all duration-200 hover:bg-red-600"
+              onClick={() => (window.location.href = "/Perfil")}
+            >
               <img
                 src={iconoUsuario}
                 alt="Usuario"
-                className="w-6 h-6 group-hover:filter group-hover:invert group-hover:brightness-0 group-hover:contrast-100"
+                className="h-6 w-6 group-hover:brightness-0 group-hover:contrast-100 group-hover:invert group-hover:filter"
               />
               <span className="font-bold text-red-600 group-hover:text-white">
                 {user?.nombre_usuario || "Usuario"}
@@ -43,8 +49,8 @@ function Header() {
             </button>
 
             <button
-              onClick={cerrarSesion} 
-              className="cursor-pointer bg-red-600 text-white px-3 py-2 rounded-md hover:bg-red-700 transition"
+              onClick={cerrarSesion}
+              className="cursor-pointer rounded-md bg-red-600 px-3 py-2 text-white transition hover:bg-red-700"
             >
               Cerrar sesión
             </button>
@@ -53,7 +59,7 @@ function Header() {
           // Usuario no autenticado
           <>
             <button
-              className="flex items-center gap-2 px-4 py-2 border border-orange-600 rounded-md text-orange-600 hover:bg-orange-50 font-semibold transition-all duration-150"
+              className="flex items-center gap-2 rounded-md border border-orange-600 px-4 py-2 font-semibold text-orange-600 transition-all duration-150 hover:bg-orange-50"
               onClick={() => (window.location.href = "/login")}
             >
               <span className="text-lg">↦</span>
@@ -61,7 +67,7 @@ function Header() {
             </button>
 
             <button
-              className="bg-[#e91e63] text-white px-4 py-2 rounded-md font-semibold hover:bg-[#c2185b] transition-colors duration-150"
+              className="rounded-md bg-[#e91e63] px-4 py-2 font-semibold text-white transition-colors duration-150 hover:bg-[#c2185b]"
               onClick={() => (window.location.href = "/register")}
             >
               Registrarse

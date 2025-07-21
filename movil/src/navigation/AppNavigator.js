@@ -12,6 +12,11 @@ import Perfil from "../screens/auth/Perfil";
 import PasosAvanzados from "../screens/Recetas/PasosAvanzados";
 
 import EditarPerfil from "../screens/auth/EditarPerfil";
+//import Perfil from './src/screens/Perfil';
+//import PasosFacil from './src/screens/PasosFacil';
+//import PasosAvanzados from './src/screens/PasosAvanzados';
+import EditarPerfil from '../screens/EditarPerfil';
+import Descripcion from '../screens/Descripcion';
 
 const Stack = createStackNavigator();
 

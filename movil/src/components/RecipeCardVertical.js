@@ -26,7 +26,6 @@ const RecipeCardVertical = ({ recipe }) => (
     </TouchableOpacity>
 );
 
-// ... (los estilos se mantienen igual que en tu archivo)
 const styles = StyleSheet.create({
     card: { backgroundColor: '#ffffff', borderRadius: 16, overflow: 'hidden', marginHorizontal: 16, marginBottom: 16, elevation: 3, shadowColor: '#000', shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.1, shadowRadius: 4 },
     image: { width: '100%', height: 180 },

@@ -26,8 +26,8 @@ const HomeScreen = () => {
     const [allRecipes, setAllRecipes] = useState([]);
     const [ingredients, setIngredients] = useState([]);
     
-    const [loading, setLoading] = useState(true); // Carga inicial de la página
-    const [recipesLoading, setRecipesLoading] = useState(false); // Carga para la lista de recetas al filtrar
+    const [loading, setLoading] = useState(true); 
+    const [recipesLoading, setRecipesLoading] = useState(false); 
     const [error, setError] = useState(null);
 
     const [activeFilter, setActiveFilter] = useState('Todos');

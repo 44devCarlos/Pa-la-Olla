@@ -7,7 +7,6 @@ const Filters = ({ ingredients, activeFilter, onSelectFilter }) => (
         showsHorizontalScrollIndicator={false} 
         contentContainerStyle={styles.container}
     >
-        {/* Botón "Todos" */}
         <TouchableOpacity
             onPress={() => onSelectFilter('Todos')}
             style={[
@@ -23,7 +22,6 @@ const Filters = ({ ingredients, activeFilter, onSelectFilter }) => (
             </Text>
         </TouchableOpacity>
 
-        {/* Botones para cada ingrediente de la API */}
         {ingredients.map((ing) => (
             <TouchableOpacity
                 key={ing.ingrediente_principal}

@@ -5,11 +5,13 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "../screens/app/HomeScreen";
-import Login from "../screens/Login";
-import Register from "../screens/Register";
+import Login from "../screens/auth/Login";
+import Register from "../screens/auth/Register";
 
-import Perfil from "../screens/Perfil";
-import PasosAvanzados from "../screens/PasosAvanzados"; // Asegúrate de que esta ruta sea correcta
+import Perfil from "../screens/auth/Perfil";
+import PasosAvanzados from "../screens/Recetas/PasosAvanzados";
+
+import EditarPerfil from "../screens/auth/EditarPerfil";
 
 const Stack = createStackNavigator();
 
@@ -20,23 +22,20 @@ const AppNavigator = () => {
         <Stack.Screen
           name="HomeScreen"
           component={HomeScreen}
-          // Esta es la línea clave para ocultar el header por defecto
           options={{ headerShown: false }}
         />
         {/* Pantalla de Pasos Avanzados */}
         <Stack.Screen
           name="PasosAvanzados"
           component={PasosAvanzados}
-          options={{ title: "Pasos Avanzados" }} // Título para la pantalla de Pasos Avanzados
+          options={{ title: "Pasos Avanzados" }} 
         />
         <Stack.Screen
           name="Login"
           component={Login}
-          // Ocultamos el header para usar uno personalizado si es necesario
           options={{ headerShown: false }}
         />
         {/* Pantallas de Autenticación */}
-
         <Stack.Screen
           name="Register"
           component={Register}
@@ -47,8 +46,13 @@ const AppNavigator = () => {
         <Stack.Screen
           name="Perfil"
           component={Perfil}
-          // Puedes decidir si mostrar el header por defecto o no
-          options={{ title: "Mi Perfil" }} // Ejemplo: Mostrar un título
+          options={{ headerShown: false }} 
+        />
+
+        <Stack.Screen
+          name="EditarPerfil"
+          component={EditarPerfil}
+          options={{ headerShown: false }} 
         />
       </Stack.Navigator>
     </NavigationContainer>

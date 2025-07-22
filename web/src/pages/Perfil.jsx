@@ -13,6 +13,7 @@ const Perfil = () => {
   const [mostrarPasoPaso, setMostrarPasoPaso] = useState(false);
   const [mostrarDetallesPedido, setMostrarDetallesPedido] = useState(false);
   const [recetaActual, setRecetaActual] = useState(null);
+  const [mostrarVideo, setMostrarVideo] = useState(false);
 
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem("usuario");
@@ -30,14 +31,19 @@ const Perfil = () => {
   }, [user]);
 
   useEffect(() => {
-    if (mostrarPedidos || mostrarPasoPaso || mostrarDetallesPedido) {
+    if (
+      mostrarPedidos ||
+      mostrarPasoPaso ||
+      mostrarDetallesPedido ||
+      mostrarVideo
+    ) {
       document.body.classList.add("overflow-hidden");
     }
 
     return () => {
       document.body.classList.remove("overflow-hidden");
     };
-  }, [mostrarPedidos, mostrarPasoPaso, mostrarDetallesPedido]);
+  }, [mostrarPedidos, mostrarPasoPaso, mostrarDetallesPedido, mostrarVideo]);
 
   const fetchTodosLosPedidos = async (id_usuario) => {
     try {
@@ -80,7 +86,7 @@ const Perfil = () => {
     }
   };
 
-  const verPasoPaso = (id_pedido) => {
+  const verDetalles = (id_pedido) => {
     setRecetaActual(pedidos.find((pedido) => pedido.id_pedido === id_pedido));
     setRecetaActual((prevReceta) => ({
       ...prevReceta,
@@ -161,14 +167,18 @@ const Perfil = () => {
                         className="cursor-pointer rounded border border-orange-500 bg-orange-500 px-3 py-1 text-sm text-white hover:bg-rose-900 hover:text-white"
                         onClick={() => {
                           setMostrarPasoPaso(true);
-                          verPasoPaso(pedido.id_pedido);
+                          setMostrarVideo(true);
+                          verDetalles(pedido.id_pedido);
                         }}
                       >
                         Ver Receta
                       </button>
                       <button
                         className="cursor-pointer rounded border border-orange-500 bg-orange-500 px-3 py-1 text-sm text-white hover:bg-rose-900 hover:text-white"
-                        onClick={() => setMostrarDetallesPedido(true)}
+                        onClick={() => {
+                          setMostrarDetallesPedido(true);
+                          verDetalles(pedido.id_pedido);
+                        }}
                       >
                         Ver Detalles
                       </button>
@@ -238,14 +248,18 @@ const Perfil = () => {
                       className="cursor-pointer rounded border border-orange-500 bg-orange-500 px-3 py-1 text-sm text-white hover:bg-rose-900 hover:text-white"
                       onClick={() => {
                         setMostrarPasoPaso(true);
-                        verPasoPaso(pedido.id_pedido);
+                        setMostrarVideo(true);
+                        verDetalles(pedido.id_pedido);
                       }}
                     >
                       Ver Receta
                     </button>
                     <button
                       className="cursor-pointer rounded border border-orange-500 bg-orange-500 px-3 py-1 text-sm text-white hover:bg-rose-900 hover:text-white"
-                      onClick={() => setMostrarDetallesPedido(true)}
+                      onClick={() => {
+                        setMostrarDetallesPedido(true);
+                        verDetalles(pedido.id_pedido);
+                      }}
                     >
                       Ver Detalles
                     </button>
@@ -268,7 +282,10 @@ const Perfil = () => {
         <div className="relative flex h-140 w-250 flex-col overflow-y-scroll rounded-lg bg-white p-6 text-red-900">
           <FaTimes
             className="absolute top-5 right-5 cursor-pointer text-gray-700"
-            onClick={() => setMostrarPasoPaso(false)}
+            onClick={() => {
+              setMostrarPasoPaso(false);
+              setMostrarVideo(false);
+            }}
           >
             x
           </FaTimes>
@@ -360,7 +377,10 @@ const Perfil = () => {
                   <div className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
                     <button
                       className="cursor-pointer rounded bg-rose-900 px-5 py-2 text-lg font-bold text-white hover:bg-rose-800"
-                      onClick={() => setMostrarPasoPaso(false)}
+                      onClick={() => {
+                        setMostrarPasoPaso(false);
+                        setMostrarVideo(false);
+                      }}
                     >
                       Termine
                     </button>
@@ -380,9 +400,6 @@ const Perfil = () => {
                       Receta completa con vídeo tutorial y pasos detallados
                     </p>
                     <div className="mt-2 flex flex-wrap justify-center gap-4 text-sm">
-                      <span className="rounded border border-gray-200 bg-white px-3 py-1">
-                        ⏱️ 1 hora
-                      </span>
                       <span className="rounded border border-gray-200 bg-white px-3 py-1">
                         👨‍👩‍👧‍👦 {recetaActual.cantidad} personas
                       </span>
@@ -409,15 +426,26 @@ const Perfil = () => {
                       <p className="text-sm text-white/80">
                         Vídeo paso a paso de la preparación
                       </p>
-                      <iframe
-                        src={recetaActual ? recetaActual.video : ""}
-                        title="YouTube video player"
-                        className="aspect-video w-full"
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        referrerPolicy="strict-origin-when-cross-origin"
-                        allowFullScreen
-                      ></iframe>
+                      {mostrarVideo ? (
+                        <iframe
+                          src={recetaActual ? recetaActual.video : ""}
+                          title="YouTube video player"
+                          className="aspect-video w-full"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          referrerPolicy="strict-origin-when-cross-origin"
+                          allowFullScreen
+                        ></iframe>
+                      ) : (
+                        <>
+                          <button
+                            className="mt-4 rounded bg-yellow-500 px-4 py-2 text-white hover:bg-yellow-600"
+                            onClick={() => setMostrarVideo(true)}
+                          >
+                            Ver Vídeo Tutorial
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
 
@@ -487,7 +515,10 @@ const Perfil = () => {
                   <div className="mt-6 flex flex-col items-center justify-center gap-4 sm:flex-row">
                     <button
                       className="cursor-pointer rounded bg-rose-900 px-5 py-2 text-lg font-bold text-white hover:bg-rose-800"
-                      onClick={() => setMostrarPasoPaso(false)}
+                      onClick={() => {
+                        setMostrarPasoPaso(false);
+                        setMostrarVideo(false);
+                      }}
                     >
                       Termine
                     </button>
@@ -509,13 +540,80 @@ const Perfil = () => {
       <section
         className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 ${mostrarDetallesPedido ? "block" : "hidden"}`}
       >
-        <div className="relative flex h-140 w-250 flex-col overflow-y-scroll rounded-lg bg-white p-6 text-red-900">
+        <div className="relative flex h-140 w-100 flex-col overflow-y-scroll rounded-lg bg-white p-6 text-center text-red-900">
           <FaTimes
             className="absolute top-5 right-5 cursor-pointer text-gray-700"
             onClick={() => setMostrarDetallesPedido(false)}
           >
             x
           </FaTimes>
+          <div className="space-y-4 px-4 py-10">
+            <h3 className="mb-2 text-lg font-bold">Detalles del Pedido</h3>
+            <p>Aquí puedes ver los detalles de tu pedido.</p>
+            <div>
+              <h4 className="text-md mt-4 font-semibold">
+                Información del Cliente
+              </h4>
+              <p>
+                <span className="font-semibold">Nombre:</span>{" "}
+                {user?.nombre_usuario}
+              </p>
+              <p>
+                <span className="font-semibold">Email:</span> {user?.email}
+              </p>
+              <p>
+                <span className="font-semibold">Teléfono:</span>{" "}
+                {user?.telefono}
+              </p>
+              <p>
+                <span className="font-semibold">Dirección:</span>{" "}
+                {recetaActual?.direccion || "No disponible"}
+              </p>
+              {/*Orden de paypal, nivel de la receta, nombre de receta, fecha del
+              pedido, monto de pago */}
+              <h4 className="text-md mt-4 font-semibold">
+                Detalles del Pedido
+              </h4>
+              <p>
+                <span className="font-semibold">ID del pedido:</span>
+                {" #"}
+                {recetaActual?.id_pedido}
+              </p>
+              <p>
+                <span className="font-semibold">Orden de Paypal:</span>{" "}
+                {recetaActual?.orden_paypal}
+              </p>
+              <p>
+                <span className="font-semibold">Fecha:</span>{" "}
+                {new Date(recetaActual?.fecha_pedido).toLocaleDateString(
+                  "es-ES",
+                  {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  },
+                )}
+              </p>
+              <p>
+                <span className="font-semibold">Nombre de la receta:</span>{" "}
+                {recetaActual?.nombre_receta}
+              </p>
+              <p>
+                <span className="font-semibold">Nivel:</span>{" "}
+                {recetaActual?.nivel}
+              </p>
+              <p>
+                <span className="font-semibold">Cantidad:</span>{" "}
+                {recetaActual?.cantidad}
+                {" Personas"}
+              </p>
+              <p>
+                <span className="font-semibold">Total:</span>
+                {" $"}
+                {Number(recetaActual?.precio).toFixed(2)}
+              </p>
+            </div>
+          </div>
         </div>
       </section>
     </div>

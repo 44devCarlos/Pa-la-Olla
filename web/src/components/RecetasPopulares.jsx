@@ -2,52 +2,59 @@ import { useNavigate } from "react-router-dom";
 function RecetasPopulares({ recetasPopulares }) {
   const navigate = useNavigate();
   const handleVerReceta = (receta) => {
-   navigate(`/descripcion/${receta.nombre_receta}`, { state: { receta } });
+    navigate(`/descripcion/${receta.nombre_receta}`, { state: { receta } });
   };
-  
+
   if (!recetasPopulares || recetasPopulares.length === 0) {
     return (
       <section className="p-6 text-center">
-        <h2 className="text-2xl font-bold text-red-700 mb-4">Recetas Principales</h2>
+        <h2 className="mb-4 text-2xl font-bold text-red-700">
+          Recetas Principales
+        </h2>
         <p className="text-gray-500">No hay recetas disponibles aún.</p>
       </section>
     );
   }
-  
 
   return (
-    <section className="bg-[#FFF1E7] py-10 px-6">
-      <div className="text-center mb-6">
-        <span className="text-xs bg-red-600 text-white px-2 py-1 rounded-full uppercase tracking-wide font-bold">
+    <section className="bg-[#FFF1E7] px-6 py-10">
+      <div className="mb-6 text-center">
+        <span className="rounded-full bg-red-600 px-2 py-1 text-xs font-bold tracking-wide text-white uppercase">
           Para ti
         </span>
-        <h2 className="text-xl md:text-2xl font-bold text-red-700 mt-2">
+        <h2 className="mt-2 text-xl font-bold text-red-700 md:text-2xl">
           Recetas Populares
         </h2>
       </div>
 
-      <div className="flex gap-4 overflow-x-auto">
+      <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto">
         {recetasPopulares.map((receta) => (
           <div
             key={receta.id_receta}
-            className="min-w-[300px] bg-white rounded-lg shadow-md overflow-hidden group transition-all duration-300 ease-in-out hover:shadow-xl"
+            className="group min-w-[300px] snap-center overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 ease-in-out hover:shadow-xl"
           >
             <img
               src={receta.imagen_receta}
               alt={receta.nombre_receta}
-              className="w-full h-40 object-cover rounded transition-transform duration-300 group-hover:scale-110"
+              className="h-40 w-full rounded-t-md object-cover transition-transform duration-300 group-hover:scale-110"
             />
 
             <div className="p-4 transition-transform duration-300 group-hover:-translate-y-2">
-              <h3 className="font-semibold mt-2 text-red-700">{receta.nombre_receta}</h3>
-              <p className="text-sm text-gray-500 line-clamp-2">{receta.descripcion_receta}</p>
-              <p className="mt-2 text-red-600 font-bold">{receta.rango_precio}</p>
+              <h3 className="mt-2 font-semibold text-red-700">
+                {receta.nombre_receta}
+              </h3>
+              <p className="line-clamp-2 text-sm text-gray-500">
+                {receta.descripcion_receta}
+              </p>
+              <p className="mt-2 font-bold text-red-600">
+                {receta.rango_precio}
+              </p>
               <button
-                    className="w-full cursor-pointer rounded bg-red-600 py-2 font-semibold text-white transition hover:bg-red-700"
-                    onClick={() => handleVerReceta(receta)}
-                  >
-                    Ver Receta
-                  </button>
+                className="w-full cursor-pointer rounded bg-red-600 py-2 font-semibold text-white transition hover:bg-red-700"
+                onClick={() => handleVerReceta(receta)}
+              >
+                Ver Receta
+              </button>
             </div>
           </div>
         ))}

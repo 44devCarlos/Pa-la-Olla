@@ -275,13 +275,13 @@ export default function Descripcion() {
 
   return (
     <main>
-      <section className="mx-auto max-w-screen-xl p-2 md:py-6">
+      <section className="mx-auto mb-20 max-w-screen-xl p-2 md:py-6">
         <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="flex h-[31rem] flex-col items-center justify-center">
             <img
               src={receta.imagen_receta}
               alt={receta.nombre_receta}
-              className="aspect-video rounded-t-xl shadow-2xl"
+              className="h-full w-full rounded-t-xl object-cover shadow-2xl"
             />
           </div>
 
@@ -524,6 +524,7 @@ export default function Descripcion() {
           </div>
         </section>
       </section>
+
       <section
         className={`fixed inset-0 z-50 flex items-center justify-center bg-black/70 ${mostrarOverlay ? "block" : "hidden"}`}
       >

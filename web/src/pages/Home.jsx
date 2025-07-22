@@ -60,7 +60,7 @@ export default function Home() {
                 <h3 className="mt-2 font-semibold text-red-700">
                   {receta.nombre_receta}
                 </h3>
-                <p className="text-sm text-gray-600 line-clamp-2">
+                <p className="line-clamp-2 text-sm text-gray-600">
                   {receta.descripcion_receta}
                 </p>
 

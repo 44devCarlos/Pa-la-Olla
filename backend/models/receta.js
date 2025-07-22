@@ -2,9 +2,9 @@ import { connection } from "./configDB.js";
 // File: backend/models/receta.js
 
 export class ModeloReceta {
-	static async ObtenerRecetasPrincipales() {
+	static async ObtenerRecetasPopulares() {
 		const [recetas] = await connection.query(
-			`Call obtener_recetas_principales()`
+			`Call obtener_recetas_populares()`
 		);
 		return recetas[0];
 	}

@@ -1,5 +1,11 @@
-function PrincipalesRecetas({ recetasPrincipales }) {
-  if (!recetasPrincipales || recetasPrincipales.length === 0) {
+import { useNavigate } from "react-router-dom";
+function RecetasPopulares({ recetasPopulares }) {
+  const navigate = useNavigate();
+  const handleVerReceta = (receta) => {
+   navigate(`/descripcion/${receta.nombre_receta}`, { state: { receta } });
+  };
+  
+  if (!recetasPopulares || recetasPopulares.length === 0) {
     return (
       <section className="p-6 text-center">
         <h2 className="text-2xl font-bold text-red-700 mb-4">Recetas Principales</h2>
@@ -7,6 +13,7 @@ function PrincipalesRecetas({ recetasPrincipales }) {
       </section>
     );
   }
+  
 
   return (
     <section className="bg-[#FFF1E7] py-10 px-6">
@@ -15,12 +22,12 @@ function PrincipalesRecetas({ recetasPrincipales }) {
           Para ti
         </span>
         <h2 className="text-xl md:text-2xl font-bold text-red-700 mt-2">
-          Principales Recetas
+          Recetas Populares
         </h2>
       </div>
 
       <div className="flex gap-4 overflow-x-auto">
-        {recetasPrincipales.map((receta) => (
+        {recetasPopulares.map((receta) => (
           <div
             key={receta.id_receta}
             className="min-w-[300px] bg-white rounded-lg shadow-md overflow-hidden group transition-all duration-300 ease-in-out hover:shadow-xl"
@@ -35,6 +42,12 @@ function PrincipalesRecetas({ recetasPrincipales }) {
               <h3 className="font-semibold mt-2 text-red-700">{receta.nombre_receta}</h3>
               <p className="text-sm text-gray-500 line-clamp-2">{receta.descripcion_receta}</p>
               <p className="mt-2 text-red-600 font-bold">{receta.rango_precio}</p>
+              <button
+                    className="w-full cursor-pointer rounded bg-red-600 py-2 font-semibold text-white transition hover:bg-red-700"
+                    onClick={() => handleVerReceta(receta)}
+                  >
+                    Ver Receta
+                  </button>
             </div>
           </div>
         ))}
@@ -43,4 +56,4 @@ function PrincipalesRecetas({ recetasPrincipales }) {
   );
 }
 
-export default PrincipalesRecetas;
+export default RecetasPopulares;

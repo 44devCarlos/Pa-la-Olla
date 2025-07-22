@@ -6,7 +6,7 @@ export const crearRecetaRouter = ({ recetaModelo }) => {
 
     const recetaControlador = new ControladorReceta({ recetaModelo });
 
-    router.get("/recetasPrincipales", recetaControlador.obtenerRecetasPrincipales);
+    router.get("/recetasPopulares", recetaControlador.obtenerRecetasPopulares);
     router.get("/ingredientesPrincipales", recetaControlador.obtenerIngredientesPrincipales);
     router.get("/filtrarPorIngrediente", recetaControlador.filtrarPorIngrediente);
     router.get("/todas", recetaControlador.obtenerTodasLasRecetas);

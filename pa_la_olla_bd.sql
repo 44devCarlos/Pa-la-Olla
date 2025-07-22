@@ -129,9 +129,11 @@ CREATE TABLE IF NOT EXISTS `comentario` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `FK_comentario_receta` FOREIGN KEY (`id_receta`) REFERENCES `receta` (`id_receta`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_comentario_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla pa_la_olla.comentario: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla pa_la_olla.comentario: ~0 rows (aproximadamente)
+INSERT INTO `comentario` (`id_comentario`, `id_receta`, `id_usuario`, `descripcion`, `calificacion`, `fecha_comentario`) VALUES
+	(14, 6, 9, 'Deliciosa', 5.000000, '2025-07-22 00:50:19');
 
 -- Volcando estructura para procedimiento pa_la_olla.obtener_calificaciones_receta
 DROP PROCEDURE IF EXISTS `obtener_calificaciones_receta`;
@@ -213,13 +215,21 @@ BEGIN
 END//
 DELIMITER ;
 
--- Volcando estructura para procedimiento pa_la_olla.obtener_recetas_principales
-DROP PROCEDURE IF EXISTS `obtener_recetas_principales`;
+-- Volcando estructura para procedimiento pa_la_olla.obtener_recetas_populares
+DROP PROCEDURE IF EXISTS `obtener_recetas_populares`;
 DELIMITER //
-CREATE PROCEDURE `obtener_recetas_principales`()
+CREATE PROCEDURE `obtener_recetas_populares`()
 BEGIN
-	SELECT * FROM receta
-	WHERE id_receta IN (1, 2, 6);
+SELECT r.*
+FROM receta r
+JOIN (
+    SELECT p.id_receta
+    FROM pedido p
+    GROUP BY p.id_receta
+    ORDER BY COUNT(*) DESC
+    LIMIT 3
+) AS populares
+ON r.id_receta = populares.id_receta;
 END//
 DELIMITER ;
 
@@ -316,9 +326,9 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   `id_pedido` int NOT NULL AUTO_INCREMENT,
   `id_usuario` int DEFAULT NULL,
   `id_receta` int DEFAULT NULL,
-  `orden_paypal` text COLLATE utf8mb4_general_ci,
+  `orden_paypal` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `precio` decimal(20,6) DEFAULT NULL,
-  `receta_nivel` text COLLATE utf8mb4_general_ci,
+  `receta_nivel` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `receta_cantidad` int DEFAULT NULL,
   `direccion` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `fecha_pedido` timestamp NULL DEFAULT (now()),
@@ -327,15 +337,17 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   KEY `id_espec` (`id_receta`) USING BTREE,
   CONSTRAINT `FK_pedido_receta` FOREIGN KEY (`id_receta`) REFERENCES `receta` (`id_receta`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_pedido_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla pa_la_olla.pedido: ~1 rows (aproximadamente)
+-- Volcando datos para la tabla pa_la_olla.pedido: ~5 rows (aproximadamente)
 INSERT INTO `pedido` (`id_pedido`, `id_usuario`, `id_receta`, `orden_paypal`, `precio`, `receta_nivel`, `receta_cantidad`, `direccion`, `fecha_pedido`) VALUES
 	(9, 10, 2, '90251416EJ539480S', 9.000000, 'principiante', 2, 'El Valle San Isidro Sector 2', '2025-07-21 22:14:27'),
 	(10, 10, 4, '21S51432LR420521X', 16.000000, 'intermedio', 6, 'El Valle San Isidro Sector 2', '2025-07-21 22:14:48'),
 	(11, 10, 7, '4H627513S56603041', 6.000000, 'avanzado', 4, 'El Valle San Isidro Sector 2', '2025-07-21 22:15:26'),
 	(12, 10, 14, '1G688202VX312464X', 13.000000, 'avanzado', 6, 'El Valle San Isidro Sector 2', '2025-07-21 22:16:04'),
-	(13, 10, 2, '6R009217A2610381S', 6.000000, 'avanzado', 2, 'El Valle San Isidro Sector 2', '2025-07-21 22:21:09');
+	(13, 10, 2, '6R009217A2610381S', 6.000000, 'avanzado', 2, 'El Valle San Isidro Sector 2', '2025-07-21 22:21:09'),
+	(14, 9, 6, '6U119655X3990870R', 18.000000, 'principiante', 4, 'Don Bosco', '2025-07-22 00:47:43'),
+	(15, 9, 6, '7CA31406E59521629', 13.000000, 'avanzado', 4, 'Don Bosco', '2025-07-22 00:49:00');
 
 -- Volcando estructura para tabla pa_la_olla.receta
 DROP TABLE IF EXISTS `receta`;

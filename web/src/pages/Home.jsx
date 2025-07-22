@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import PrincipalesRecetas from "../components/PrincipalesRecetas";
+import RecetasPopulares from "../components/RecetasPopulares";
 import FiltrosIngredientes from "../components/FiltrosIngredientes";
 const baseUrl = "http://localhost:3305/";
 import { useNavigate } from "react-router-dom";
@@ -18,12 +18,12 @@ export default function Home() {
       );
   }, []);
 
-  const [principales, setPrincipales] = useState([]);
+  const [populares, setPopulares] = useState([]);
 
   useEffect(() => {
-    fetch(baseUrl + "receta/recetasPrincipales")
+    fetch(baseUrl + "receta/recetasPopulares")
       .then((res) => res.json())
-      .then((data) => setPrincipales(data));
+      .then((data) => setPopulares(data));
   }, []);
 
   const filtrarRecetas = (recetasFiltradas) => {
@@ -36,7 +36,7 @@ export default function Home() {
 
   return (
     <>
-      <PrincipalesRecetas recetasPrincipales={principales} />
+      <RecetasPopulares recetasPopulares={populares} />
       <section className="bg-white px-6 py-10">
         <div className="mb-6 text-center">
           <h2 className="text-xl font-bold text-red-700 md:text-2xl">

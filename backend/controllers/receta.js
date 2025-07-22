@@ -2,8 +2,8 @@ export class ControladorReceta {
 	constructor({ recetaModelo }) {
 		this.recetaModelo = recetaModelo;
 	}
-	obtenerRecetasPrincipales = async (req, res) => {
-		const recetas = await this.recetaModelo.ObtenerRecetasPrincipales();
+	obtenerRecetasPopulares = async (req, res) => {
+		const recetas = await this.recetaModelo.ObtenerRecetasPopulares();
 		return res.json(recetas);
 	};
 

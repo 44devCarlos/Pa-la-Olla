@@ -15,8 +15,8 @@ import EditarPerfil from "../screens/auth/EditarPerfil";
 //import Perfil from './src/screens/Perfil';
 //import PasosFacil from './src/screens/PasosFacil';
 //import PasosAvanzados from './src/screens/PasosAvanzados';
-import EditarPerfil from '../screens/EditarPerfil';
-import Descripcion from '../screens/Descripcion';
+//import EditarPerfil from '../screens/EditarPerfil';
+import Descripcion from '../screens/Recetas/Descripcion';
 
 const Stack = createStackNavigator();
 
@@ -57,6 +57,12 @@ const AppNavigator = () => {
         <Stack.Screen
           name="EditarPerfil"
           component={EditarPerfil}
+          options={{ headerShown: false }} 
+        />
+
+        <Stack.Screen
+          name="Descripcion"
+          component={Descripcion}
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>

@@ -20,12 +20,25 @@ import EditarPerfil from "../screens/auth/EditarPerfil";
 //import PasosAvanzados from './src/screens/PasosAvanzados';
 //import EditarPerfil from '../screens/EditarPerfil';
 import Descripcion from '../screens/Recetas/Descripcion';
+import OrdenarPedido from '../screens/Pedidos/OrdenarPedido';
+import * as Linking from "expo-linking";
+
 
 const Stack = createStackNavigator();
 
+const linking = {
+	prefixes: [Linking.createURL("/")],
+	config: {
+		screens: {
+			HomeScreen: "homeScreen",
+			Descripcion: "descripcion",
+		},
+	},
+};
+
 const AppNavigator = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator>
         <Stack.Screen
           name="HomeScreen"
@@ -84,6 +97,11 @@ const AppNavigator = () => {
         <Stack.Screen
           name="Descripcion"
           component={Descripcion}
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen
+          name="OrdenarPedido"
+          component={OrdenarPedido}
           options={{ headerShown: false }} 
         />
       </Stack.Navigator>

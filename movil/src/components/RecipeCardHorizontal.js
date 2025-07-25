@@ -17,7 +17,6 @@ const RecipeCardHorizontal = ({ recipe }) => {
                 <Text style={styles.title} numberOfLines={1}>{recipe.nombre_receta}</Text>
                 <View style={styles.infoRow}>
                     <View style={styles.infoItem}>
-                        <Icon name="dollar-sign" size={14} color="#991b1b" />
                         <Text style={styles.infoText}>{recipe.rango_precio}</Text>
                     </View>
                 </View>

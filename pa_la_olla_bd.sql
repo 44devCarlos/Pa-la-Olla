@@ -85,7 +85,7 @@ BEGIN
     IF comentario_existe > 0 THEN
         -- Actualizamos el comentario existente
         UPDATE comentario
-        SET comentario = p_comentario,
+        SET descripcion = p_descripcion,
             fecha_comentario = CURRENT_TIMESTAMP
         WHERE id_usuario = p_id_usuario AND id_receta = p_id_receta;
     ELSE
@@ -129,9 +129,12 @@ CREATE TABLE IF NOT EXISTS `comentario` (
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `FK_comentario_receta` FOREIGN KEY (`id_receta`) REFERENCES `receta` (`id_receta`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_comentario_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla pa_la_olla.comentario: ~0 rows (aproximadamente)
+-- Volcando datos para la tabla pa_la_olla.comentario: ~1 rows (aproximadamente)
+INSERT INTO `comentario` (`id_comentario`, `id_receta`, `id_usuario`, `descripcion`, `calificacion`, `fecha_comentario`) VALUES
+	(19, 2, 10, 'A', 5.000000, '2025-07-22 22:50:31'),
+	(20, 7, 10, 'Delicioso ', 5.000000, '2025-07-22 22:51:09');
 
 -- Volcando estructura para procedimiento pa_la_olla.obtener_calificaciones_receta
 DROP PROCEDURE IF EXISTS `obtener_calificaciones_receta`;
@@ -335,13 +338,19 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   KEY `id_espec` (`id_receta`) USING BTREE,
   CONSTRAINT `FK_pedido_receta` FOREIGN KEY (`id_receta`) REFERENCES `receta` (`id_receta`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_pedido_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla pa_la_olla.pedido: ~3 rows (aproximadamente)
+-- Volcando datos para la tabla pa_la_olla.pedido: ~9 rows (aproximadamente)
 INSERT INTO `pedido` (`id_pedido`, `id_usuario`, `id_receta`, `orden_paypal`, `precio`, `receta_nivel`, `receta_cantidad`, `direccion`, `fecha_pedido`) VALUES
 	(16, 10, 2, '4W6394354U926210R', 16.000000, 'principiante', 4, 'El Valle San Isidro Sector 2', '2025-07-22 02:31:35'),
 	(17, 10, 9, '0B362402G9844400G', 14.000000, 'avanzado', 6, 'El Valle San Isidro Sector 2', '2025-07-22 02:31:54'),
-	(18, 10, 7, '01131200448477222', 7.000000, 'intermedio', 4, 'El Valle San Isidro Sector 2', '2025-07-22 02:32:13');
+	(18, 10, 7, '01131200448477222', 7.000000, 'intermedio', 4, 'El Valle San Isidro Sector 2', '2025-07-22 02:32:13'),
+	(19, 10, 6, '61P28780Y2904961B', 10.000000, 'principiante', 2, 'A', '2025-07-25 01:28:55'),
+	(20, 10, 7, '28F23347LF5839447', 9.000000, 'avanzado', 6, 'A', '2025-07-25 01:33:07'),
+	(21, 10, 7, '4BJ3215538518692V', 10.000000, 'principiante', 4, 'A', '2025-07-25 01:34:53'),
+	(22, 10, 9, '4B314205FA416290R', 14.000000, 'avanzado', 6, 'Z', '2025-07-25 01:59:04'),
+	(23, 10, 15, '1ER10932SL6071939', 13.000000, 'intermedio', 4, 'A', '2025-07-25 02:23:44'),
+	(24, 10, 5, '54H13712AP8822230', 8.000000, 'intermedio', 2, 'A', '2025-07-25 02:28:05');
 
 -- Volcando estructura para tabla pa_la_olla.receta
 DROP TABLE IF EXISTS `receta`;
@@ -434,7 +443,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 -- Volcando datos para la tabla pa_la_olla.usuarios: ~3 rows (aproximadamente)
 INSERT INTO `usuarios` (`id_usuario`, `nombre_usuario`, `email`, `telefono`, `contrasena`) VALUES
 	(9, 'Moises Macre', 'josemoises@gmail.com', '6845-2603', '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92'),
-	(10, 'Carlos Rodríguez', 'carv2012@gmail.com', '61744815', 'ac9689e2272427085e35b9d3e3e8bed88cb3434828b43b86fc0596cad4c6e270'),
+	(10, 'Alberto Rodríguez', 'carv2012@gmail.com', '61744815', 'ac9689e2272427085e35b9d3e3e8bed88cb3434828b43b86fc0596cad4c6e270'),
 	(11, 'Neymar ', 'enejota@gmail.com', '66753846', '8bb0cf6eb9b17d0f7d22b456f121257dc1254e1f01665370476383ea776df414');
 
 -- Volcando estructura para procedimiento pa_la_olla.verificar_usuario

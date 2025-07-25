@@ -356,9 +356,6 @@ const Perfil = () => {
                           Ten cuidado al retirar del microondas, puede estar muy
                           caliente
                         </li>
-                        <li>
-                          Si queda algo seco, agrega un poco de agua o caldo
-                        </li>
                         <li>Consume inmediatamente después de calentar</li>
                       </ul>
                     </div>
@@ -540,7 +537,7 @@ const Perfil = () => {
       <section
         className={`fixed inset-0 z-50 flex items-center justify-center bg-black/50 ${mostrarDetallesPedido ? "block" : "hidden"}`}
       >
-        <div className="relative flex h-140 w-100 flex-col overflow-y-scroll rounded-lg bg-white p-6 text-center text-red-900">
+        <div className="relative flex h-140 w-100 flex-col overflow-y-auto rounded-lg bg-white p-6 text-center text-red-900">
           <FaTimes
             className="absolute top-5 right-5 cursor-pointer text-gray-700"
             onClick={() => setMostrarDetallesPedido(false)}

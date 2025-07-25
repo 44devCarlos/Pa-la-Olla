@@ -597,8 +597,8 @@ export default function Descripcion() {
                   />
                   <div className="flex h-full w-full items-center justify-between rounded-lg border border-red-900/20 px-2">
                     <div className="flex w-full items-center space-x-3 px-3">
-                      <img src={receta.imagen} alt="" className="size-5" />
-                      <div className="flex flex-col">
+                      <span className="text-lg">💡</span>
+                      <div className=" flex flex-col">
                         <p className="font-bold">Principiante</p>
                         <p className="text-sm font-semibold">
                           Preparación sencilla
@@ -631,7 +631,7 @@ export default function Descripcion() {
                   </div>
                   <div className="flex h-full w-full items-center justify-between rounded-lg border border-red-900/20 px-2">
                     <div className="flex w-full items-center space-x-3 px-3">
-                      <img src={receta.imagen} alt="" className="size-5" />
+                      <span className="text-lg">🥘</span>
                       <div className="flex flex-col">
                         <p className="font-bold">Intermedio</p>
                         <p className="text-sm font-semibold">
@@ -665,7 +665,7 @@ export default function Descripcion() {
                   </div>
                   <div className="flex h-full w-full items-center justify-between rounded-lg border border-red-900/20 px-2">
                     <div className="flex w-full items-center space-x-3 px-3">
-                      <img src={receta.imagen} alt="" className="size-5" />
+                      <span className="text-lg">👨‍🍳</span>
                       <div className="flex flex-col">
                         <p className="font-bold">Avanzado</p>
                         <p className="text-sm font-semibold">

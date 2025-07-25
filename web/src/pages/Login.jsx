@@ -79,7 +79,7 @@ export default function Login() {
             </div>
             <button
               type="submit"
-              className="w-full bg-orange-600 text-white py-2 rounded-md hover:bg-orange-700 transition"
+              className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-orange-700 transition"
             >
               Iniciar Sesión
             </button>

@@ -107,7 +107,7 @@ const Perfil = () => {
         <h1 className="mb-2 text-3xl font-bold">
           {user?.nombre_usuario || "Usuario"}
         </h1>
-        <span className="inline-block rounded bg-yellow-500 px-3 py-1 text-sm text-white">
+        <span className="inline-block rounded bg-red-600 px-3 py-1 text-sm text-white">
           Cliente Activo
         </span>
       </section>
@@ -130,13 +130,13 @@ const Perfil = () => {
             <h2 className="text-lg font-semibold">Estadísticas</h2>
             <div className="flex justify-between">
               <span>Pedidos</span>
-              <span className="rounded border border-yellow-400 px-2 py-1 text-sm">
+              <span className="rounded border border-red-600 px-2 py-1 text-sm">
                 {cantidadPedidos}
               </span>
             </div>
             <div className="flex justify-between">
               <span>Reseñas</span>
-              <span className="rounded border border-yellow-400 px-2 py-1 text-sm">
+              <span className="rounded border border-red-600 px-2 py-1 text-sm">
                 {cantidadComentarios}
               </span>
             </div>
@@ -164,7 +164,7 @@ const Perfil = () => {
                     </div>
                     <div className="flex items-center gap-3">
                       <button
-                        className="cursor-pointer rounded border border-orange-500 bg-orange-500 px-3 py-1 text-sm text-white hover:bg-rose-900 hover:text-white"
+                        className="cursor-pointer rounded border border-red-500 bg-red-600 px-3 py-1 text-sm text-white hover:bg-rose-900 hover:text-white"
                         onClick={() => {
                           setMostrarPasoPaso(true);
                           setMostrarVideo(true);
@@ -174,7 +174,7 @@ const Perfil = () => {
                         Ver Receta
                       </button>
                       <button
-                        className="cursor-pointer rounded border border-orange-500 bg-orange-500 px-3 py-1 text-sm text-white hover:bg-rose-900 hover:text-white"
+                        className="cursor-pointer rounded border border-red-500 bg-red-600 px-3 py-1 text-sm text-white hover:bg-rose-900 hover:text-white"
                         onClick={() => {
                           setMostrarDetallesPedido(true);
                           verDetalles(pedido.id_pedido);
@@ -192,7 +192,7 @@ const Perfil = () => {
               )}
               <div className="mt-6 text-center">
                 <button
-                  className="cursor-pointer rounded border bg-orange-500 px-4 py-2 text-white hover:bg-rose-900"
+                  className="cursor-pointer rounded border bg-red-600 px-4 py-2 text-white hover:bg-rose-900"
                   onClick={() => setMostrarPedidos(true)}
                 >
                   Ver Todos los Pedidos
@@ -204,12 +204,12 @@ const Perfil = () => {
           {/* Botones de acción */}
           <div className="mb-10 grid gap-4 md:grid-cols-2">
             <Link to="/">
-              <button className="w-full cursor-pointer rounded bg-orange-500 px-4 py-2 text-white hover:bg-rose-900">
+              <button className="w-full cursor-pointer rounded bg-red-600 px-4 py-2 text-white hover:bg-rose-900">
                 Explorar Recetas
               </button>
             </Link>
             <button
-              className="w-full cursor-pointer rounded bg-orange-500 px-4 py-2 text-white hover:bg-rose-900"
+              className="w-full cursor-pointer rounded bg-red-600 px-4 py-2 text-white hover:bg-rose-900"
               onClick={() => (window.location.href = "/EditarPerfil")}
             >
               Editar Perfil

@@ -170,7 +170,7 @@ export class ControladorPedido {
 
 	capturarOrdenPaypal = async (req, res) => {
 		const { token } = req.query;
-		
+
 		if (!token) {
 			return res.status(400).json({ error: "ID de orden requerido" });
 		}
@@ -200,7 +200,7 @@ export class ControladorPedido {
 			}
 
 			const access_token = tokenData.access_token;
-
+			
 			const captureResponse = await fetch(
 				`${PAYPAL_API}/v2/checkout/orders/${token}/capture`,
 				{
@@ -211,14 +211,25 @@ export class ControladorPedido {
 					},
 				}
 			);
-			
+
 			const captureData = await captureResponse.json();
-			console.log("Datos de captura:", captureData.purchase_units[0].payments);
+			console.log(
+				"Datos de captura:",
+				captureData.purchase_units[0].payments
+			);
 			if (captureData.status === "COMPLETED") {
 				// Aquí se registra el pedido en la base de datos
 				const orden_paypal = captureData.id;
-				const { id_usuario, id_receta, receta_nivel, receta_cantidad, direccion } = req.body;
-				const precio = captureData.purchase_units[0].payments.captures[0].amount.value;
+				const {
+					id_usuario,
+					id_receta,
+					receta_nivel,
+					receta_cantidad,
+					direccion,
+				} = req.body;
+				const precio =
+					captureData.purchase_units[0].payments.captures[0].amount
+						.value;
 				const resultado = await this.pedidoModelo.registrarPedido(
 					id_usuario,
 					id_receta,

@@ -17,12 +17,12 @@ function Footer() {
 
         {/* Columna 2: Ingredientes */}
         <div>
-          <h3 className="font-semibold text-lg mb-3">Ingredientes</h3>
+          <h3 className="font-semibold text-lg mb-3">Sabor Pa' la Olla</h3>
           <ul className="space-y-2 text-sm">
-            <li>Recetas con Pollo</li>
+            <li>Recetas Típicas</li>
             <li>Platos de Carne</li>
             <li>Especialidades de Pescado</li>
-            <li>Comida Vegetariana</li>
+            <li>Recetas con Pollo</li>
           </ul>
         </div>
 
@@ -31,7 +31,7 @@ function Footer() {
           <h3 className="font-semibold text-lg mb-3">Contacto</h3>
           <ul className="space-y-2 text-sm">
             <li>📍 Ciudad de Panamá</li>
-            <li>📞 +507 123-4567</li>
+            <li>📞 +507 6845-2603</li>
             <li>✉️ info@palaolla.com</li>
           </ul>
         </div>

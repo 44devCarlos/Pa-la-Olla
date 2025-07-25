@@ -1,64 +1,77 @@
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRoute } from "@react-navigation/native";
+import WhatsAppButton from '../../components/WhatsAppButton';
 
 const PasosFacil = () => {
+  const route = useRoute();
+  const { receta } = route.params;
+
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>
-        Sancocho Panameño – <Text style={styles.highlight}>Listo para Calentar</Text>
-      </Text>
-      <Text style={styles.subtitle}>
-        Tu comida ya está preparada. Solo necesitas calentarla y ¡a disfrutar!
-      </Text>
+    <View style={{ flex: 1 }}>
+      
+        <Text style={styles.title}>
+          {receta.nombre_receta} – <Text style={styles.highlight}>Listo para Calentar</Text>
+        </Text>
+        <Text style={styles.subtitle}>
+          Tu {receta.nombre_receta} ya está preparada. Solo necesitas calentar y ¡a disfrutar!
+        </Text>
 
-      <View style={styles.card}>
-        <View style={styles.sectionHeader}>
-          <Text style={styles.icon}>⚡</Text>
-          <Text style={styles.sectionTitle}>Instrucciones de Calentamiento</Text>
-        </View>
+        <View style={styles.card}>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.icon}>⚡</Text>
+            <Text style={styles.sectionTitle}>Instrucciones de Calentamiento</Text>
+          </View>
 
-        <View style={styles.section}>
-          <Text style={styles.subheading}>🍽️ Microondas (Recomendado)</Text>
-          <View style={styles.list}>
-            <Text style={styles.listItem}>1. Remueve la tapa del envase y haz pequeños agujeros con un tenedor</Text>
-            <Text style={styles.listItem}>2. Calienta en potencia alta por 2-3 minutos</Text>
-            <Text style={styles.listItem}>3. Revuelve bien y calienta 1 minuto más si es necesario</Text>
-            <Text style={styles.listItem}>4. Deja reposar 30 segundos antes de servir</Text>
+          <View style={styles.section}>
+            <Text style={styles.subheading}>🍽️ Microondas (Recomendado)</Text>
+            <View style={styles.list}>
+              {receta.niveles?.[receta.receta_nivel]?.[`${receta.receta_cantidad}_personas`]?.paso_a_paso?.map((paso_a_paso, index) => (
+                <View key={index} style={styles.ingredientItem}>
+                  <Text style={styles.ingredientText}>
+                    <Text style={styles.ingredientNumber}>{index + 1}. </Text>
+                    {paso_a_paso}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+
+          <View style={styles.section}>
+            <Text style={styles.subheading}>Alternativa: Estufa</Text>
+            <Text style={styles.altMethod}>
+              Sartén: Vacía el contenido en una sartén a fuego medio-bajo, agrega una cucharada de agua y calienta por 3–5 minutos revolviendo ocasionalmente.
+            </Text>
+          </View>
+
+          <View style={styles.warningBox}>
+            <Text style={styles.warningTitle}>⚠️ Consejos Importantes</Text>
+            <View style={styles.list}>
+              <Text style={styles.listItem}>• Asegúrate que esté bien caliente antes de servir</Text>
+              <Text style={styles.listItem}>• Ten cuidado al retirar del microondas, puede estar muy caliente</Text>
+              <Text style={styles.listItem}>• Consume inmediatamente después de calentar</Text>
+            </View>
+          </View>
+
+          <View style={styles.finalBox}>
+            <Text style={styles.finalText}>¡Calienta y a Comer! 🍽️</Text>
           </View>
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.subheading}>Alternativa: Estufa</Text>
-          <Text style={styles.altMethod}>
-            Sartén: Vacía el contenido en una sartén a fuego medio-bajo, agrega una cucharada de agua y calienta por 3–5 minutos revolviendo ocasionalmente.
-          </Text>
-        </View>
+       
+      
 
-        <View style={styles.warningBox}>
-          <Text style={styles.warningTitle}>⚠️ Consejos Importantes</Text>
-          <View style={styles.list}>
-            <Text style={styles.listItem}>• Asegúrate que esté bien caliente antes de servir</Text>
-            <Text style={styles.listItem}>• Ten cuidado al retirar del microondas, puede estar muy caliente</Text>
-            <Text style={styles.listItem}>• Si queda algo seco, agrega un poco de agua o caldo</Text>
-            <Text style={styles.listItem}>• Consume inmediatamente después de calentar</Text>
-          </View>
-        </View>
-
-        <View style={styles.finalBox}>
-          <Text style={styles.finalText}>¡Calienta y a Comer! 🍽️</Text>
-          <Text style={styles.finalSubtext}>Tu deliciosa comida panameña está lista en minutos. ¡Que lo disfrutes!</Text>
-        </View>
-      </View>
-
-      <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.filledButton}>
-          <Text style={styles.filledButtonText}>Explorar Más Recetas</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      <WhatsAppButton style={styles.whatsappButton} />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+    whatsappButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    zIndex: 10,
+  },
   container: {
     padding: 20,
     backgroundColor: '#fffefc',
@@ -205,3 +218,5 @@ const styles = StyleSheet.create({
 });
 
 export default PasosFacil;
+
+

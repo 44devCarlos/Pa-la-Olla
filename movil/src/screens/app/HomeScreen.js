@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import WhatsAppButton from '../../components/WhatsAppButton';
 import { 
     View, 
     Text, 
@@ -132,6 +133,7 @@ const HomeScreen = () => {
                     )}
                 </View>
             </ScrollView>
+            <WhatsAppButton/>
         </SafeAreaView>
     );
 };

@@ -3,13 +3,16 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
+import WhatsAppButton from '../components/WhatsAppButton';
 import HomeScreen from "../screens/app/HomeScreen";
 import Login from "../screens/auth/Login";
 import Register from "../screens/auth/Register";
 
 import Perfil from "../screens/auth/Perfil";
+import HistorialPedidos from "../screens/auth/HistorialPedidos";
+import DetallePedido from "../screens/auth/DetallePedido";
 import PasosAvanzados from "../screens/Recetas/PasosAvanzados";
+import PasosFacil from "../screens/Recetas/PasosFacil";
 
 import EditarPerfil from "../screens/auth/EditarPerfil";
 //import Perfil from './src/screens/Perfil';
@@ -35,6 +38,12 @@ const AppNavigator = () => {
           component={PasosAvanzados}
           options={{ title: "Pasos Avanzados" }} 
         />
+
+         <Stack.Screen
+          name="PasosFacil"
+          component={PasosFacil}
+          options={{ title: "Pasos Facil" }} 
+        />
         <Stack.Screen
           name="Login"
           component={Login}
@@ -52,6 +61,18 @@ const AppNavigator = () => {
           name="Perfil"
           component={Perfil}
           options={{ headerShown: false }} 
+        />
+
+        <Stack.Screen
+          name="HistorialPedidos"
+          component={HistorialPedidos}
+          options={{ title: "Historial de Pedidos"}} 
+        />
+
+         <Stack.Screen
+          name="DetallePedido"
+          component={DetallePedido}
+          options={{ title: "Detalles del Pedido" }} 
         />
 
         <Stack.Screen

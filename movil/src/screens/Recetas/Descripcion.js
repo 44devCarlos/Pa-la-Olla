@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, StyleSheet, ActivityIndicator, Alert } from 'react-native';
 import { useRoute } from '@react-navigation/native';
+import WhatsAppButton from '../../components/WhatsAppButton';
 import { fetchRecipeRatings, fetchRecipeComments } from '../../services/api';
 
-// Importamos los nuevos componentes que crearemos
 import RecipeInfo from '../../components/RecipeInfo';
 import CommentsSection from '../../components/CommentsSection';
 
 const Descripcion = () => {
     const route = useRoute();
-    const { receta } = route.params; // Recibimos la receta desde la pantalla anterior
+    const { receta } = route.params;
 
     const [ratings, setRatings] = useState({});
     const [comments, setComments] = useState([]);
@@ -33,7 +33,7 @@ const Descripcion = () => {
 
     useEffect(() => {
         loadRecipeDetails();
-    }, [receta.id_receta]); // Se ejecuta cada vez que la receta cambie
+    }, [receta.id_receta]);
 
     if (loading) {
         return (
@@ -44,20 +44,29 @@ const Descripcion = () => {
     }
 
     return (
-        <ScrollView style={styles.container}>
-            <RecipeInfo receta={receta} ratings={ratings} />
-            <CommentsSection 
-                recipeId={receta.id_receta}
-                initialComments={comments}
-                onCommentPosted={loadRecipeDetails} // Función para recargar todo al postear
-            />
-        </ScrollView>
+        <View style={{ flex: 1 }}>
+            <ScrollView style={styles.container}>
+                <RecipeInfo receta={receta} ratings={ratings} />
+                <CommentsSection
+                    recipeId={receta.id_receta}
+                    initialComments={comments}
+                    onCommentPosted={loadRecipeDetails}
+                />
+            </ScrollView>
+            <WhatsAppButton style={styles.whatsappButton} />
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: { flex: 1, backgroundColor: '#fff7f4' },
-    centeredContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' }
+    centeredContainer: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    whatsappButton: {
+        position: 'absolute',
+        bottom: 20,
+        right: 20,
+        zIndex: 10
+    }
 });
 
 export default Descripcion;

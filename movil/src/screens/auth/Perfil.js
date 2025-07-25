@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import WhatsAppButton from '../../components/WhatsAppButton';
 import {
     View,
     Text,
@@ -14,7 +15,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
-import { fetchOrderCount, fetchCommentCount } from "../../services/api";
+import { fetchOrderCount, fetchCommentCount, fetchOrdersByUser } from "../../services/api";
 
 const Perfil = () => {
     const navigation = useNavigation();
@@ -23,6 +24,7 @@ const Perfil = () => {
     const [user, setUser] = useState(null);
     const [orderCount, setOrderCount] = useState(0);
     const [commentCount, setCommentCount] = useState(0);
+    const [pedidos, setPedidos] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -34,12 +36,14 @@ const Perfil = () => {
                     const parsedUser = JSON.parse(storedUser);
                     setUser(parsedUser);
 
-                    const [orders, comments] = await Promise.all([
+                    const [ordersCount, comments,orders] = await Promise.all([
                         fetchOrderCount(parsedUser.id_usuario),
                         fetchCommentCount(parsedUser.id_usuario),
+                        fetchOrdersByUser(parsedUser.id_usuario),
                     ]);
-                    setOrderCount(orders);
+                    setOrderCount(ordersCount);
                     setCommentCount(comments);
+                    setPedidos(orders);
                 } else {
                     navigation.navigate("Login");
                 }
@@ -81,7 +85,7 @@ const Perfil = () => {
             </View>
         );
     }
-
+    const ultimoPedido = pedidos.length > 0 ? pedidos[0] : null;
     return (
         <SafeAreaView style={styles.safeArea}>
             <View style={styles.header}>
@@ -134,25 +138,38 @@ const Perfil = () => {
 
                 <View style={styles.largeBox}>
                     <Text style={styles.boxTitle}>Pedidos Recientes</Text>
+                    
+                    {ultimoPedido ? (
                     <View style={styles.recentOrder}>
                         <View>
-                            <Text style={styles.orderTitle}>Sancocho Panameño</Text>
-                            <Text style={styles.orderSubtitle}>
-                                Pedido #PA001 • 15 de julio de 2025
-                            </Text>
+                        <Text style={styles.orderTitle}>{ultimoPedido.nombre_receta}</Text>
+                        <Text style={styles.orderSubtitle}>
+                            Pedido #{ultimoPedido.id_pedido} •{" "}
+                            {new Date(ultimoPedido.fecha_pedido).toLocaleDateString()}
+                        </Text>
                         </View>
                         <View style={styles.orderButtons}>
-                            <TouchableOpacity style={styles.button}>
-                                <Text style={styles.buttonText}>Ver Receta</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.button}>
-                                <Text style={styles.buttonText}>Ver Detalles</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.buttonText} onPress={() => {
+                                    if (ultimoPedido.receta_nivel.toLowerCase() === "principiante") {
+                                    navigation.navigate("PasosFacil", { receta: ultimoPedido });
+                                    } else {
+                                    navigation.navigate("PasosAvanzados", { receta: ultimoPedido });
+                                    }
+                                }}>Ver Receta
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("DetallePedido", { pedidoId: ultimoPedido.id_pedido  })}>
+                            <Text style={styles.buttonText}>Ver Detalles</Text>
+                        </TouchableOpacity>
                         </View>
                     </View>
+                    ) : (
+                    <Text style={styles.boxText}>No hay pedidos recientes.</Text>
+                    )}
                     
 
-                    <TouchableOpacity style={styles.mainButton}>
+                    <TouchableOpacity style={styles.mainButton} onPress={() => navigation.navigate("HistorialPedidos")}>
                         <Text style={styles.mainButtonText}>Ver Todos los Pedidos</Text>
                     </TouchableOpacity>
                 </View>
@@ -161,6 +178,7 @@ const Perfil = () => {
                     <Text style={styles.mainButtonText}>Cerrar Sesión</Text>
                 </TouchableOpacity>
             </ScrollView>
+            <WhatsAppButton/>
         </SafeAreaView>
     );
 };

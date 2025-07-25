@@ -5,7 +5,7 @@
 // - Si usas un emulador de iOS: 'http://localhost:3305' debería funcionar.
 // - Si usas un dispositivo físico: usa la IP de tu computadora en la red local.
 //   (Ej: 'http://192.168.1.10:3305')
-const API_URL = "http://10.0.2.2:3305";
+const API_URL = "http://192.168.100.94:3305";
 
 //Usuario AUTH
 
@@ -49,8 +49,30 @@ export const postRecipeComment = async (commentData) => {
     }
 };
 
+export const updateUser = async (userData) => {
+  try {
+    // Se usa la ruta '/usuario/actualizarUsuarios' de tu ejemplo y la variable API_URL
+    const response = await fetch(`${API_URL}/usuario/actualizarUsuarios`, {
+      method: "POST", // O 'PUT'/'PATCH' si tu API lo requiere para actualizar
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userData),
+    });
 
+    const data = await response.json();
 
+    if (!response.ok) {
+
+      throw new Error(data.message || "Error al actualizar los datos.");
+    } 
+
+    return data.usuarioActualizado || data;
+  } catch (error) {
+    console.error("Error en updateUser:", error);
+    throw error;
+  }
+};
 
 export const registerUser = async (userData) => {
     try {
@@ -138,6 +160,17 @@ export const fetchRecipesByIngredient = async (ingredient) => {
     try {
         const response = await fetch(`${API_URL}/receta/filtrarPorIngrediente?ingrediente=${ingredient}`);
         if (!response.ok) throw new Error('Error al filtrar recetas');
+        return await response.json();
+    } catch (error) {
+        console.error('API Error:', error);
+        throw error;
+    }
+};
+
+export const fetchOrdersByUser = async (id_usuario) => {
+    try {
+        const response = await fetch(`${API_URL}/pedido/todosLosPedidos/${id_usuario}`);
+        if (!response.ok) throw new Error('Error al obtener pedidos');
         return await response.json();
     } catch (error) {
         console.error('API Error:', error);

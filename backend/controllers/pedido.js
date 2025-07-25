@@ -151,6 +151,7 @@ export class ControladorPedido {
 			);
 
 			const orderData = await orderResponse.json();
+			console.log("Datos de la orden:", orderData);
 
 			if (orderResponse.ok) {
 				return res.json({ order: orderData });

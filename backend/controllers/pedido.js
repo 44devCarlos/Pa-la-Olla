@@ -133,8 +133,8 @@ export class ControladorPedido {
 					brand_name: "Pa La Olla",
 					landing_page: "NO_PREFERENCE",
 					user_action: "PAY_NOW",
-					return_url: `exp://192.168.0.3:8081/--/descripcion?status=crear&from=paypal`,
-					cancel_url: `exp://192.168.0.3:8081/--/descripcion?status=cancelar`,
+					return_url: `exp://${API_URL}:8081/--/descripcion?status=crear&from=paypal`,
+					cancel_url: `exp://${API_URL}:8081/--/descripcion?status=cancelar`,
 				},
 			};
 
@@ -201,7 +201,7 @@ export class ControladorPedido {
 			}
 
 			const access_token = tokenData.access_token;
-			
+
 			const captureResponse = await fetch(
 				`${PAYPAL_API}/v2/checkout/orders/${token}/capture`,
 				{

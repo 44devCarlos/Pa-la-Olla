@@ -1,4 +1,4 @@
-import { API_URL } from "../../movil/src/services/api.js";
+import { IP } from "../../movil/src/services/api.js";
 import {
 	PORT,
 	PAYPAL_CLIENT_ID,
@@ -133,8 +133,8 @@ export class ControladorPedido {
 					brand_name: "Pa La Olla",
 					landing_page: "NO_PREFERENCE",
 					user_action: "PAY_NOW",
-					return_url: `exp://${API_URL}:8081/--/descripcion?status=crear&from=paypal`,
-					cancel_url: `exp://${API_URL}:8081/--/descripcion?status=cancelar`,
+					return_url: `exp://${IP}:8081/--/descripcion?status=crear&from=paypal`,
+					cancel_url: `exp://${IP}:8081/--/descripcion?status=cancelar`,
 				},
 			};
 

@@ -14,10 +14,7 @@ import {
 	fetchPrices,
 	captureOrder,
 } from "../../services/api";
-import {
-	useNavigation,
-	useRoute,
-} from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import RecipeInfo from "../../components/RecipeInfo";
@@ -29,7 +26,7 @@ const Descripcion = () => {
 	const route = useRoute();
 	const navigation = useNavigation();
 	const { receta, status } = route.params;
-	
+
 	const [recetaFinal, setRecetaFinal] = useState({});
 	const [ratings, setRatings] = useState({});
 	const [comments, setComments] = useState([]);
@@ -38,28 +35,55 @@ const Descripcion = () => {
 	const [idReceta, setIdReceta] = useState(null);
 
 	useEffect(() => {
-		const subscription = Linking.addEventListener("url", async ({ url }) => {
-			try {
-				const pedidoPendienteString = await AsyncStorage.getItem("pedidoPendiente");
+		const subscription = Linking.addEventListener(
+			"url",
+			async ({ url }) => {
+				try {
+					const pedidoPendienteString = await AsyncStorage.getItem(
+						"pedidoPendiente"
+					);
 
-				if (pedidoPendienteString) {
-					const pedidoPendienteData = JSON.parse(pedidoPendienteString);
-					
-					const resultado = await captureOrder(pedidoPendienteData);
-					if (resultado) {
-						console.log("Pedido registrado correctamente al volver de PayPal");
-						await AsyncStorage.removeItem("pedidoPendiente");
+					if (
+						pedidoPendienteString &&
+						url.includes("descripcion?status=crear")
+					) {
+						const pedidoPendienteData = JSON.parse(
+							pedidoPendienteString
+						);
+
+						const resultado = await captureOrder(
+							pedidoPendienteData
+						);
+						if (resultado) {
+							console.log(
+								"Pedido registrado correctamente al volver de PayPal"
+							);
+							await AsyncStorage.removeItem("pedidoPendiente");
+						}
+						navigation.reset({
+							index: 0,
+							routes: [{ name: "HomeScreen" }],
+						});
+					} else if (
+						pedidoPendienteString &&
+						url.includes("descripcion?status=cancelar")
+					) {
+						navigation.reset({
+							index: 1,
+							routes: [
+								{ name: "HomeScreen" },
+								{ name: "Descripcion", params: { receta } },
+							],
+						});
 					}
+				} catch (error) {
+					console.error(
+						"Error al manejar redirección desde PayPal:",
+						error
+					);
 				}
-
-				navigation.reset({
-					index: 0,
-					routes: [{ name: "HomeScreen" }],
-				});
-			} catch (error) {
-				console.error("Error al manejar redirección desde PayPal:", error);
 			}
-		});
+		);
 
 		return () => {
 			subscription.remove();
@@ -71,7 +95,7 @@ const Descripcion = () => {
 			try {
 				let recetaFinal = receta;
 
-				if(!recetaFinal || !recetaFinal.id_receta) return;
+				if (!recetaFinal || !recetaFinal.id_receta) return;
 
 				setRecetaFinal(recetaFinal);
 				setIdReceta(recetaFinal.id_receta);

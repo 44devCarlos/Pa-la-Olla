@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 
-const StarRating = ({ maxStars = 5, onChange, value = 0, readOnly = false, tamaño}) => {
+export default function StarRating({ maxStars = 5, onChange, value = 0, readOnly = false, tamaño }) {
   const [rating, setRating] = useState(value);
 
     useEffect(() => {
@@ -44,5 +44,3 @@ const StarRating = ({ maxStars = 5, onChange, value = 0, readOnly = false, tama�
     </div>
   );
 };
-
-export default StarRating;

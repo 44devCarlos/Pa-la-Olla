@@ -15,7 +15,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { loginUser, } from '../../services/api'; 
-import logoPaLaOlla from '../../../assets/icon.png';
+import logoPaLaOlla from '../../../assets/3d.png';
 
 export default function Login() {
     const navigation = useNavigation();

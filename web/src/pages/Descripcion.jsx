@@ -149,6 +149,7 @@ export default function Descripcion() {
 
     const id_usuario = usuario.id_usuario;
     const id_receta = receta.id_receta;
+
     fetch(baseUrl + "receta/agregarComentario", {
       method: "POST",
       headers: {
@@ -161,7 +162,7 @@ export default function Descripcion() {
         calificacion,
       }),
     })
-      .then((res) => res)
+      .then((res) => res.json())
       .then((data) => {
         if (data.error) {
           alert(data.error);

@@ -5,7 +5,7 @@
 // - Si usas un emulador de iOS: 'http://localhost:3305' debería funcionar.
 // - Si usas un dispositivo físico: usa la IP de tu computadora en la red local.
 //   (Ej: 'http://192.168.1.10:3305')
-export const API_URL = "http://10.0.2.2:3305";
+export const API_URL = "http://192.168.0.3:3305";
 
 export const registerUser = async (userData) => {
 	try {
@@ -145,8 +145,11 @@ export const postRecipeComment = async (commentData) => {
 			headers: { "Content-Type": "application/json" },
 			body: JSON.stringify(commentData),
 		});
-		if (!response.ok) throw new Error("Error al publicar el comentario");
-		return;
+		const data = await response.json();
+
+		if (data.mensaje === "Comentario agregado exitosamente") {
+			return "Ya has comentado";
+		}
 	} catch (error) {
 		console.error("API Error al publicar comentario:", error);
 		throw error;
@@ -154,28 +157,27 @@ export const postRecipeComment = async (commentData) => {
 };
 
 export const updateUser = async (userData) => {
-  try {
-    // Se usa la ruta '/usuario/actualizarUsuarios' de tu ejemplo y la variable API_URL
-    const response = await fetch(`${API_URL}/usuario/actualizarUsuarios`, {
-      method: "POST", // O 'PUT'/'PATCH' si tu API lo requiere para actualizar
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(userData),
-    });
+	try {
+		// Se usa la ruta '/usuario/actualizarUsuarios' de tu ejemplo y la variable API_URL
+		const response = await fetch(`${API_URL}/usuario/actualizarUsuarios`, {
+			method: "POST", // O 'PUT'/'PATCH' si tu API lo requiere para actualizar
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(userData),
+		});
 
-    const data = await response.json();
+		const data = await response.json();
 
-    if (!response.ok) {
+		if (!response.ok) {
+			throw new Error(data.message || "Error al actualizar los datos.");
+		}
 
-      throw new Error(data.message || "Error al actualizar los datos.");
-    } 
-
-    return data.usuarioActualizado || data;
-  } catch (error) {
-    console.error("Error en updateUser:", error);
-    throw error;
-  }
+		return data.usuarioActualizado || data;
+	} catch (error) {
+		console.error("Error en updateUser:", error);
+		throw error;
+	}
 };
 
 export const fetchPrices = async (recipeId) => {
@@ -206,14 +208,16 @@ export const createOrder = async (orderData) => {
 };
 
 export const fetchOrdersByUser = async (id_usuario) => {
-    try {
-        const response = await fetch(`${API_URL}/pedido/todosLosPedidos/${id_usuario}`);
-        if (!response.ok) throw new Error('Error al obtener pedidos');
-        return await response.json();
-    } catch (error) {
-        console.error('API Error:', error);
-        throw error;
-    }
+	try {
+		const response = await fetch(
+			`${API_URL}/pedido/todosLosPedidos/${id_usuario}`
+		);
+		if (!response.ok) throw new Error("Error al obtener pedidos");
+		return await response.json();
+	} catch (error) {
+		console.error("API Error:", error);
+		throw error;
+	}
 };
 
 export const captureOrder = async (orderData) => {
@@ -232,4 +236,4 @@ export const captureOrder = async (orderData) => {
 		console.error("API Error al capturar orden:", error);
 		throw error;
 	}
-}
+};

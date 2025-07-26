@@ -57,7 +57,7 @@ export class ModeloReceta {
 			`Call agregar_comentario(?, ?, ?, ?)`,
 			[id_usuario, id_receta, descripcion, calificacion]
 		);
-		return resultado[0];
+		return resultado[0][0]?.resultado;
 	}
 
 	static async ObtenerPrecioPorNiveles(id_receta) {
@@ -68,11 +68,10 @@ export class ModeloReceta {
 		return precios[0];
 	}
 
-	static async VerReceta(id_receta){
-		const [receta] = await connection.query(
-			`Call ver_receta(?)`,
-			[id_receta]
-		);
+	static async VerReceta(id_receta) {
+		const [receta] = await connection.query(`Call ver_receta(?)`, [
+			id_receta,
+		]);
 		return receta[0];
 	}
 }

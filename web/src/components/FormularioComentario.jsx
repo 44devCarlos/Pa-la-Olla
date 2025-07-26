@@ -1,7 +1,14 @@
+import { useEffect } from "react";
 import {Button} from "./button";
 import StarRating from "./StarRating.jsx";
 
 export default function FormularioComentario({ receta, usuario, setValor, handleSubmit }) {
+
+  useEffect(() => {
+    const cajaComentario = document.getElementById("cajaComentario");
+    cajaComentario.value = ""; // Limpiar el campo de comentario al cargar el componente
+  }, [receta.id_receta]);
+
   return (
     <>
       <div className="mb-6 w-[70%] rounded-xl bg-white p-6 shadow-lg">

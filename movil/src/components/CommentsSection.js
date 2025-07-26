@@ -42,7 +42,17 @@ const CommentsSection = ({ recipeId, initialComments, onCommentPosted }) => {
 		};
 
 		try {
-			await postRecipeComment(commentData);
+			const resultado = await postRecipeComment(commentData);
+			console.log(resultado);
+			if (!resultado) {
+				Alert.alert(
+					"Comentario Existente",
+					"Ya has dejado un comentario para esta receta."
+				);
+				setCommentText("");
+				onCommentPosted();
+				return;
+			}
 			Alert.alert("¡Gracias!", "Tu comentario ha sido publicado.");
 			setCommentText("");
 			onCommentPosted(); // Llama a la función para recargar los comentarios y ratings

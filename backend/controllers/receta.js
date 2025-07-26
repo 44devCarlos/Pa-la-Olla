@@ -71,7 +71,14 @@ export class ControladorReceta {
 			descripcion,
 			calificacion
 		);
-		return res.json(resultado);
+		
+		if (resultado === "existe") {
+			return res
+				.status(400)
+				.json({ error: "Ya has comentado esta receta" });
+		}
+
+		res.status(200).json({ mensaje: "Comentario agregado exitosamente" });
 	};
 
 	obtenerPrecioPorNiveles = async (req, res) => {

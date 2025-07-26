@@ -49,19 +49,18 @@ export default function ModalPasoPasoReceta({
                         <span className="text-lg text-red-500">🍽️</span>{" "}
                         Microondas (Recomendado)
                       </h2>
-                      <ol className="list-inside list-decimal space-y-2 text-sm text-rose-900">
-                        <li>
-                          Remueve la tapa del envase y haz pequeños agujeros con
-                          un tenedor
-                        </li>
-                        <li>
-                          Calienta en potencia alta por{" "}
-                          <strong>2-3 minutos</strong>
-                        </li>
-                        <li>
-                          Revuelve bien y calienta 1 minuto más si es necesario
-                        </li>
-                        <li>Deja reposar 30 segundos antes de servir</li>
+                      <ol className="list-inside list-decimal space-y-2 text-sm">
+                        {[
+                          recetaActual.niveles[recetaActual.nivel][
+                            `${recetaActual.cantidad}_personas`
+                          ].paso_a_paso,
+                        ].map((r) =>
+                          r.map((paso_a_paso, index) => (
+                            <li key={index} className="text-rose-900">
+                              {paso_a_paso}
+                            </li>
+                          )),
+                        )}
                       </ol>
                     </div>
 

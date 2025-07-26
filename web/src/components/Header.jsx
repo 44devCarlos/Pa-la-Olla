@@ -59,7 +59,7 @@ function Header() {
           // Usuario no autenticado
           <>
             <button
-              className="flex items-center gap-2 rounded-md border border-orange-600 px-4 py-2 font-semibold text-orange-600 transition-all duration-150 hover:bg-orange-50"
+              className="flex cursor-pointer items-center gap-2 rounded-md border border-orange-600 px-4 py-2 font-semibold text-orange-600 transition-all duration-150 hover:bg-orange-50"
               onClick={() => (window.location.href = "/login")}
             >
               <span className="text-lg">↦</span>
@@ -67,7 +67,7 @@ function Header() {
             </button>
 
             <button
-              className="rounded-md bg-[#e91e63] px-4 py-2 font-semibold text-white transition-colors duration-150 hover:bg-[#c2185b]"
+              className="cursor-pointer rounded-md bg-[#e91e63] px-4 py-2 font-semibold text-white transition-colors duration-150 hover:bg-[#c2185b]"
               onClick={() => (window.location.href = "/register")}
             >
               Registrarse
@@ -80,4 +80,3 @@ function Header() {
 }
 
 export default Header;
-

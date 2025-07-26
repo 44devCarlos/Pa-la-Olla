@@ -21,7 +21,7 @@ function Footer() {
           <ul className="space-y-2 text-sm">
             <li>Recetas Típicas</li>
             <li>Platos de Carne</li>
-            <li>Especialidades de Pescado</li>
+            <li>Próximamente especialidades de Pescado</li>
             <li>Recetas con Pollo</li>
           </ul>
         </div>

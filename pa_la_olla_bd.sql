@@ -76,22 +76,19 @@ CREATE PROCEDURE `agregar_comentario`(
 	IN `p_calificacion` DECIMAL(20,6)
 )
 BEGIN
-    DECLARE comentario_existe INT;
+   DECLARE comentario_existe INT;
     
     SELECT COUNT(*) INTO comentario_existe 
     FROM comentario
     WHERE id_usuario = p_id_usuario AND id_receta = p_id_receta;
     
     IF comentario_existe > 0 THEN
-        -- Actualizamos el comentario existente
-        UPDATE comentario
-        SET descripcion = p_descripcion,
-            fecha_comentario = CURRENT_TIMESTAMP
-        WHERE id_usuario = p_id_usuario AND id_receta = p_id_receta;
+        SELECT 'existe' AS resultado;
     ELSE
         -- Insertamos un nuevo comentario
         INSERT INTO comentario (id_usuario, id_receta, descripcion, calificacion, fecha_comentario)
         VALUES (p_id_usuario, p_id_receta, p_descripcion, p_calificacion, CURRENT_TIMESTAMP);
+        SELECT 'ok' AS resultado;
     END IF;
 END//
 DELIMITER ;
@@ -125,20 +122,28 @@ CREATE TABLE IF NOT EXISTS `comentario` (
   `calificacion` decimal(20,6) DEFAULT NULL,
   `fecha_comentario` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id_comentario`),
+  UNIQUE KEY `unique_receta_usuario` (`id_receta`,`id_usuario`),
   KEY `id_receta` (`id_receta`),
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `FK_comentario_receta` FOREIGN KEY (`id_receta`) REFERENCES `receta` (`id_receta`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_comentario_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla pa_la_olla.comentario: ~6 rows (aproximadamente)
+-- Volcando datos para la tabla pa_la_olla.comentario: ~1 rows (aproximadamente)
 INSERT INTO `comentario` (`id_comentario`, `id_receta`, `id_usuario`, `descripcion`, `calificacion`, `fecha_comentario`) VALUES
 	(19, 2, 10, 'A', 5.000000, '2025-07-22 22:50:31'),
 	(20, 7, 10, 'Delicioso ', 5.000000, '2025-07-22 22:51:09'),
 	(21, 3, 10, 'A', 3.500000, '2025-07-25 04:04:49'),
 	(22, 15, 12, 'Soy el mejor cocinero de Pollo Guisado', 4.500000, '2025-07-26 02:19:13'),
 	(23, 14, 10, 'Hola ', 3.500000, '2025-07-26 03:07:12'),
-	(24, 14, 12, 'Hola 3', 3.500000, '2025-07-26 03:16:22');
+	(24, 14, 12, 'Hola 3', 3.500000, '2025-07-26 03:16:22'),
+	(25, 1, 10, 'Xwfwf', 5.000000, '2025-07-26 04:45:32'),
+	(26, 4, 10, 'Delicioso ', 5.000000, '2025-07-26 04:46:00'),
+	(27, 15, 10, 'Delicioso 1', 5.000000, '2025-07-26 04:47:41'),
+	(28, 13, 10, 'Rt', 5.000000, '2025-07-26 04:49:10'),
+	(29, 12, 10, 'Df', 5.000000, '2025-07-26 04:51:24'),
+	(30, 10, 10, 'Tr  1aq', 5.000000, '2025-07-26 04:52:09'),
+	(31, 5, 12, 'asodasdlasdasdadsad', 3.000000, '2025-07-26 04:52:56');
 
 -- Volcando estructura para procedimiento pa_la_olla.obtener_calificaciones_receta
 DROP PROCEDURE IF EXISTS `obtener_calificaciones_receta`;
@@ -344,7 +349,7 @@ CREATE TABLE IF NOT EXISTS `pedido` (
   CONSTRAINT `FK_pedido_usuarios` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Volcando datos para la tabla pa_la_olla.pedido: ~19 rows (aproximadamente)
+-- Volcando datos para la tabla pa_la_olla.pedido: ~12 rows (aproximadamente)
 INSERT INTO `pedido` (`id_pedido`, `id_usuario`, `id_receta`, `orden_paypal`, `precio`, `receta_nivel`, `receta_cantidad`, `direccion`, `fecha_pedido`) VALUES
 	(16, 10, 2, '4W6394354U926210R', 16.000000, 'principiante', 4, 'El Valle San Isidro Sector 2', '2025-07-22 02:31:35'),
 	(17, 10, 9, '0B362402G9844400G', 14.000000, 'avanzado', 6, 'El Valle San Isidro Sector 2', '2025-07-22 02:31:54'),

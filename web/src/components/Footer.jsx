@@ -1,12 +1,13 @@
+import { Link } from "react-router-dom";
 import logoPaLaOlla from "../assets/img/logo.png";
+
 function Footer() {
-    return (
-    <footer className="bg-[#860000] text-white py-4 px-6">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
-        {/* Columna 1: Logo y descripción */}
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <img src={logoPaLaOlla} alt="Logo" className="w-8 h-8" />
+  return (
+    <footer className="bg-[#860000] px-6 py-8 text-white">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 md:grid-cols-4">
+        <div className="md:col-span-2">
+          <div className="mb-3 flex items-center gap-2">
+            <img src={logoPaLaOlla} alt="Logo" className="h-8 w-8" />
             <h2 className="text-xl font-bold">Pa' la olla</h2>
           </div>
           <p className="text-sm leading-relaxed">
@@ -15,9 +16,8 @@ function Footer() {
           </p>
         </div>
 
-        {/* Columna 2: Ingredientes */}
         <div>
-          <h3 className="font-semibold text-lg mb-3">Sabor Pa' la Olla</h3>
+          <h3 className="mb-3 text-lg font-semibold">Sabor Pa' la Olla</h3>
           <ul className="space-y-2 text-sm">
             <li>Recetas Típicas</li>
             <li>Platos de Carne</li>
@@ -28,7 +28,7 @@ function Footer() {
 
         {/* Columna 3: Contacto */}
         <div>
-          <h3 className="font-semibold text-lg mb-3">Contacto</h3>
+          <h3 className="mb-3 text-lg font-semibold">Contacto</h3>
           <ul className="space-y-2 text-sm">
             <li>📍 Ciudad de Panamá</li>
             <li>📞 +507 6845-2603</li>
@@ -37,14 +37,24 @@ function Footer() {
         </div>
       </div>
 
-      {/* Línea divisoria */}
-      <hr className="my-8 border-white/20" />
+      <hr className="my-6 border-white/20" />
 
-      {/* Derechos reservados */}
       <div className="text-center text-sm text-white/80">
-        © {new Date().getFullYear()} Pa' la olla. Todos los derechos reservados.
+        <div className="mt-4 flex justify-center gap-x-6">
+          <Link to="/terminos-y-condiciones" className="hover:underline">
+            Términos y Condiciones
+          </Link>
+          <Link to="/politica-de-privacidad" className="hover:underline">
+            Política de Privacidad
+          </Link>
+        </div>
+        <p>
+          © {new Date().getFullYear()} Pa' la olla. Todos los derechos
+          reservados.
+        </p>
       </div>
     </footer>
   );
 }
+
 export default Footer;

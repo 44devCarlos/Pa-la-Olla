@@ -10,6 +10,9 @@ import Descripcion from "./pages/Descripcion";
 import MainLayout from "./layouts/MainLayout";
 import EditarPerfil from "./pages/EditarPerfil";
 
+import Terminos from "./pages/Legal/Terminos";
+import Politica from "./pages/Legal/Politica";
+
 function App() {
   return (
     <BrowserRouter>
@@ -17,6 +20,8 @@ function App() {
         {/* Rutas sin header y footer */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/terminos-y-condiciones" element={<Terminos />} />
+        <Route path="/politica-de-privacidad" element={<Politica />} />
 
         {/* Rutas con header y footer */}
         <Route element={<MainLayout />}>

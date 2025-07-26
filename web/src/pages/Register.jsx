@@ -1,9 +1,21 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom"; 
 import logoPaLaOlla from "../assets/img/logo.png";
 const baseUrl = "http://localhost:3305/";
 
 export default function Register() {
+  const [terminosAceptados, setTerminosAceptados] = useState(false);
+  const [privacidadAceptada, setPrivacidadAceptada] = useState(false);
+  const navigate = useNavigate(); 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!terminosAceptados || !privacidadAceptada) {
+      alert("Debes aceptar los Términos y Condiciones y la Política de Privacidad para registrarte.");
+      return;
+    }
+
     const formData = new FormData(e.target);
 
     const data = {
@@ -32,7 +44,7 @@ export default function Register() {
       const resultado = await response.json();
       console.log("Respuesta del servidor:", resultado);
       alert("Cuenta creada con éxito");
-      window.location.href = "/login";
+      navigate("/login"); 
 
     } catch (error) {
       console.error("Error en el registro:", error);
@@ -41,10 +53,10 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-amber-50 flex flex-col items-center justify-center">
+    <div className="min-h-screen bg-gradient-to-b from-neutral-50 to-amber-50 flex flex-col items-center justify-center py-8">
       <div className="w-full max-w-md px-6">
         <div className="flex flex-col items-center mb-6">
-          <button className="self-start text-sm text-red-800 mb-2">&larr; Volver</button>
+          <Link to="/" className="self-start text-sm text-red-800 mb-2">&larr; Volver</Link>
           <img src={logoPaLaOlla} alt="Logo Pa' la olla" className="w-16 h-16 mb-2" />
           <h1 className="text-2xl font-bold text-red-800">Pa' la olla</h1>
           <p className="text-base text-red-700 mt-2">Crear Cuenta</p>
@@ -105,18 +117,56 @@ export default function Register() {
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-red-300"
               />
             </div>
+
+            <div className="space-y-2">
+                <div className="flex items-center">
+                  <input
+                    id="terminos"
+                    name="terminos"
+                    type="checkbox"
+                    checked={terminosAceptados}
+                    onChange={(e) => setTerminosAceptados(e.target.checked)}
+                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="terminos" className="ml-2 block text-sm text-gray-700">
+                    Acepto los{' '}
+                    <Link to="/terminos-y-condiciones" rel="noopener noreferrer" className="font-medium text-red-600 hover:text-red-700">
+                      Términos y Condiciones
+                    </Link>
+                  </label>
+                </div>
+                <div className="flex items-center">
+                   <input
+                    id="privacidad"
+                    name="privacidad"
+                    type="checkbox"
+                    checked={privacidadAceptada}
+                    onChange={(e) => setPrivacidadAceptada(e.target.checked)}
+                    className="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="privacidad" className="ml-2 block text-sm text-gray-700">
+                    Acepto la{' '}
+                    <Link to="/politica-de-privacidad"  rel="noopener noreferrer" className="font-medium text-red-600 hover:text-red-700">
+                      Política de Privacidad
+                    </Link>
+                  </label>
+                </div>
+            </div>
+
             <button
               type="submit"
-              className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition"
+              disabled={!terminosAceptados || !privacidadAceptada}
+              className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition disabled:bg-gray-400 disabled:cursor-not-allowed"
             >
               Crear Cuenta
             </button>
           </form>
           <p className="text-center text-sm text-gray-600 mt-4">
             ¿Ya tienes cuenta?{" "}
-            <a href="/login" className="text-red-600 font-medium">
+            {/* 7. Cambiar <a> por <Link> */}
+            <Link to="/login" className="text-red-600 font-medium">
               Iniciar sesión
-            </a>
+            </Link>
           </p>
         </div>
       </div>

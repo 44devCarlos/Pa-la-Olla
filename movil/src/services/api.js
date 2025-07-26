@@ -5,7 +5,7 @@
 // - Si usas un emulador de iOS: 'http://localhost:3305' debería funcionar.
 // - Si usas un dispositivo físico: usa la IP de tu computadora en la red local.
 //   (Ej: 'http://192.168.1.10:3305')
-export const API_URL = "http://192.168.0.3:3305";
+export const API_URL = "http://10.0.2.2:3305";
 
 export const registerUser = async (userData) => {
 	try {

@@ -141,7 +141,16 @@ const Descripcion = () => {
 		loadRecipeDetails();
 	}, [idReceta]);
 
-	const handleOrder = () => {
+	const handleOrder = async () => {
+		const userString = await AsyncStorage.getItem("usuario");
+
+	if (!userString) {
+		Alert.alert(
+			"Inicia Sesión",
+			"Debes iniciar sesión para ordenar un pedido."
+		);
+		return;
+	}
 		const arrayPrecios = [
 			[
 				{

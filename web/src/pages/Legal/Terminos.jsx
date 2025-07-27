@@ -10,7 +10,7 @@ export default function Terminos() {
         {/* 3. Cambiar Link por un botón con navigate(-1) */}
         <button 
           onClick={() => navigate(-1)} 
-          className="text-sm text-red-800 mb-6"
+          className="cursor-pointer text-sm text-red-800 mb-6"
         >
           &larr; Volver
         </button>

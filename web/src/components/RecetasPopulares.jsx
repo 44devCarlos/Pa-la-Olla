@@ -46,11 +46,8 @@ function RecetasPopulares({ recetasPopulares }) {
               <p className="line-clamp-2 text-sm text-gray-500">
                 {receta.descripcion_receta}
               </p>
-              <p className="mt-2 font-bold text-red-600">
-                {receta.rango_precio}
-              </p>
               <button
-                className="w-full cursor-pointer rounded bg-red-600 py-2 font-semibold text-white transition hover:bg-red-700"
+                className="w-full cursor-pointer rounded bg-red-600 py-1 font-semibold text-white transition hover:bg-red-700"
                 onClick={() => handleVerReceta(receta)}
               >
                 Ver Receta

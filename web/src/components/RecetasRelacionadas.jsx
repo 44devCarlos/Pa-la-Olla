@@ -27,9 +27,9 @@ export function RecetasRelacionadas({ todasLasRecetas, handleVerReceta }) {
               <p className="line-clamp-2 text-sm">{r.descripcion_receta}</p>
               <div className="mt-2 flex flex-row justify-between">
                 <p className="text-sm">⏱️ {r.rango_tiempo}</p>
-                <p className="text-sm">⏱️ {r.rango_porciones}</p>
+                <p className="text-sm">👥 {r.rango_porciones}</p>
                 <p className="mb-2 text-sm text-orange-700">
-                  💵 {r.rango_precio}
+                  💰  {r.rango_precio}
                 </p>
               </div>
               <Button

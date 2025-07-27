@@ -7,7 +7,8 @@ export default function ListaComentarios({ comentarios, calificaciones }) {
       <h2 className="self-start text-2xl font-semibold">
         Todos los comentarios ({calificaciones.total_comentario})
       </h2>
-      {comentarios.map((comentario, i) => (
+      {comentarios.length > 0 ? (
+        comentarios.map((comentario, i) => (
         <div key={i} className="w-full rounded-xl bg-white p-4 shadow-sm">
           <div className="mb-2 flex items-center justify-between gap-x-4">
             <div className="flex items-center gap-x-2">
@@ -42,7 +43,10 @@ export default function ListaComentarios({ comentarios, calificaciones }) {
           </div>
           <p className="text-sm text-gray-600">{comentario.descripcion}</p>
         </div>
-      ))}
+        ))
+      ) : (
+        <p className="text-sm text-gray-600">No hay comentarios aún.</p>
+      )}
     </div>
   );
 }

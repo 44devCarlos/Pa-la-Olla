@@ -17,13 +17,6 @@ function Footer() {
         </div>
 
         <div>
-          <h3 className="mb-3 text-lg font-semibold">Sabor Pa' la Olla</h3>
-          <ul className="space-y-2 text-sm">
-            <li>Recetas Típicas</li>
-            <li>Platos de Carne</li>
-            <li>Próximamente especialidades de Pescado</li>
-            <li>Recetas con Pollo</li>
-          </ul>
         </div>
 
         {/* Columna 3: Contacto */}

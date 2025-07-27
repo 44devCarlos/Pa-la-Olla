@@ -4,6 +4,7 @@ const baseUrl = "http://localhost:3305/";
 
 function FiltrosIngredientes({ onFiltrar }) {
   const [ingredientes, setIngredientes] = useState([]);
+  const [seleccionado, setSeleccionado] = useState("Todos");
 
   useEffect(() => {
     fetch(baseUrl + "receta/ingredientesPrincipales")
@@ -17,6 +18,7 @@ function FiltrosIngredientes({ onFiltrar }) {
       {/* Botón "Todos" */}
       <button
         onClick={() => {
+          setSeleccionado("Todos");
           fetch(baseUrl + "receta/todas")
             .then((res) => res.json())
             .then((data) => onFiltrar(data))
@@ -24,7 +26,7 @@ function FiltrosIngredientes({ onFiltrar }) {
               console.error("Error al obtener todas las recetas:", err),
             );
         }}
-        className="cursor-pointer rounded-full border border-red-600 px-4 py-2 font-semibold text-red-600 transition hover:bg-red-600 hover:text-white"
+        className={`cursor-pointer rounded-full border ${seleccionado === "Todos" ? "bg-red-800 text-white" : "bg-transparent text-red-600"} px-4 py-2 font-semibold text-red-600 transition hover:bg-red-600 hover:text-white`}
       >
         Todos
       </button>
@@ -34,6 +36,7 @@ function FiltrosIngredientes({ onFiltrar }) {
         <button
           key={index}
           onClick={() => {
+            setSeleccionado(ing.ingrediente_principal);
             fetch(
               baseUrl +
                 `receta/filtrarPorIngrediente?ingrediente=${ing.ingrediente_principal}`,
@@ -42,7 +45,7 @@ function FiltrosIngredientes({ onFiltrar }) {
               .then((data) => onFiltrar(data))
               .catch((err) => console.error("Error al filtrar:", err));
           }}
-          className="cursor-pointer rounded-full border border-red-600 px-4 py-2 font-semibold text-red-600 transition hover:bg-red-600 hover:text-white"
+          className={`${seleccionado === ing.ingrediente_principal ? "bg-red-800 text-white" : "bg-transparent text-red-600"} cursor-pointer rounded-full border border-red-600 px-4 py-2 font-semibold text-red-600 transition hover:bg-red-600 hover:text-white`}
         >
           {ing.ingrediente_principal}
         </button>

@@ -6,7 +6,9 @@ export default function FormularioComentario({ receta, usuario, setValor, handle
 
   useEffect(() => {
     const cajaComentario = document.getElementById("cajaComentario");
-    cajaComentario.value = ""; // Limpiar el campo de comentario al cargar el componente
+    if (cajaComentario) {
+      cajaComentario.value = ""; // Limpiar el campo de comentario al cargar el componente
+    }
   }, [receta.id_receta]);
 
   return (
@@ -32,7 +34,7 @@ export default function FormularioComentario({ receta, usuario, setValor, handle
             </Button>
           </div>
         ) : (
-          <p className="text-sm text-red-600">
+          <p className="text-sm text-red-600 font-semibold">
             Debes iniciar sesión para dejar un comentario.
           </p>
         )}

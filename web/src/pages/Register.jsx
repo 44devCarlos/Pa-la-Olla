@@ -1,20 +1,27 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import MensajeDeAlerta from "../components/MensajeDeAlerta";
+import { Button } from "../components/button";
 import logoPaLaOlla from "../assets/img/logo.png";
+
 const baseUrl = "http://localhost:3305/";
 
 export default function Register() {
   const [terminosAceptados, setTerminosAceptados] = useState(false);
   const [privacidadAceptada, setPrivacidadAceptada] = useState(false);
-  const navigate = useNavigate();
+  const [mensaje, setMensaje] = useState(null);
+  const [mensajeError, setMensajeError] = useState(null);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!terminosAceptados || !privacidadAceptada) {
-      alert(
+      setMensajeError(
         "Debes aceptar los Términos y Condiciones y la Política de Privacidad para registrarte.",
       );
+      setError(true);
       return;
     }
 
@@ -45,11 +52,11 @@ export default function Register() {
 
       const resultado = await response.json();
       console.log("Respuesta del servidor:", resultado);
-      alert("Cuenta creada con éxito");
-      navigate("/login");
+      setMensaje("Cuenta creada con éxito");
     } catch (error) {
       console.error("Error en el registro:", error);
-      alert("Hubo un error al crear la cuenta. Inténtalo de nuevo.");
+      setMensajeError("Hubo un error al crear la cuenta. Inténtalo de nuevo.");
+      setError(true);
     }
   };
 
@@ -192,6 +199,42 @@ export default function Register() {
           </p>
         </div>
       </div>
+
+      {/* Mensaje de alerta */}
+      {(mensaje || mensajeError) && (
+        <MensajeDeAlerta
+          estilo={"bg-white"}
+          contenido={
+            <div className="flex flex-col items-center">
+              <p>{mensaje || mensajeError}</p>
+              {!error ? (
+                <Link to="/login">
+                  <Button
+                    className={
+                      "mt-2 cursor-pointer rounded bg-red-600 p-2 font-semibold text-white transition hover:bg-red-700"
+                    }
+                    onClick={() => setMensaje("")}
+                  >
+                    Aceptar
+                  </Button>
+                </Link>
+              ) : (
+                <Button
+                  className={
+                    "mt-2 cursor-pointer rounded bg-red-600 p-2 font-semibold text-white transition hover:bg-red-700"
+                  }
+                  onClick={() => {
+                    setMensajeError("");
+                    setError(false);
+                  }}
+                >
+                  Aceptar
+                </Button>
+              )}
+            </div>
+          }
+        />
+      )}
     </div>
   );
 }

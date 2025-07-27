@@ -6,6 +6,8 @@ import { RecetaDetalles } from "../components/RecetaDetalles";
 import { RecetasRelacionadas } from "../components/RecetasRelacionadas";
 import SeccionComentarios from "../components/SeccionComentarios";
 import OverlayOrdenarReceta from "../components/OverlayOrdenarReceta";
+import MensajeDeAlerta from "../components/MensajeDeAlerta";
+import { Button } from "../components/button";
 
 export default function Descripcion() {
   const baseUrl = "http://localhost:3305/";
@@ -21,6 +23,8 @@ export default function Descripcion() {
   const [precio, setPrecio] = useState({});
   const [valor, setValor] = useState([]);
   const [mostrarOverlay, setMostrarOverlay] = useState(false);
+  const [mensaje, setMensaje] = useState(null);
+  const [mensajeError, setMensajeError] = useState(null);
   const [posicion, setPosicion] = useState(0);
   const [cantidad, setCantidad] = useState(2);
   const [total, setTotal] = useState(0);
@@ -140,8 +144,13 @@ export default function Descripcion() {
     }
     const comentarioInput = document.getElementById("cajaComentario");
     const calificacionInput = valor;
-    if (!comentarioInput || !calificacionInput) {
-      alert("Por favor, completa todos los campos.");
+    if (
+      !comentarioInput ||
+      comentarioInput.value.trim() === "" ||
+      !calificacionInput ||
+      calificacionInput == 0
+    ) {
+      setMensajeError("Por favor, completa todos los campos.");
       return;
     }
     const comentario = comentarioInput.value;
@@ -165,10 +174,10 @@ export default function Descripcion() {
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
-          alert(data.error);
+          setMensajeError(data.error);
           return;
         }
-        alert("Comentario agregado exitosamente.");
+        setMensaje("Comentario agregado exitosamente.");
         comentarioInput.value = "";
         setComentarioAgregado(true);
         setComentarios((prev) => [...prev, data]);
@@ -198,10 +207,12 @@ export default function Descripcion() {
       .then((res) => res.json())
       .then((data) => {
         if (data.error) {
-          alert(data.error);
+          setMensaje(data.error);
           return;
         }
-        alert("Orden realizada exitosamente. Mira la receta en tu perfil.");
+        setMensaje(
+          "Orden realizada exitosamente. Mira la receta en tu perfil.",
+        );
         setDireccion("");
         document.querySelectorAll("input[type='radio']").forEach((input) => {
           input.checked = false;
@@ -305,6 +316,29 @@ export default function Descripcion() {
         direccion={direccion}
         setDireccion={setDireccion}
       />
+
+      {/* Mensaje de alerta */}
+      {(mensaje ||mensajeError) && (
+          <MensajeDeAlerta
+            estilo={"bg-white"}
+            contenido={
+              <div className="flex flex-col items-center">
+                <p>{mensaje || mensajeError}</p>
+                <Button
+                  className={
+                    "mt-2 cursor-pointer rounded bg-red-600 p-2 font-semibold text-white transition hover:bg-red-700"
+                  }
+                  onClick={() => {
+                    setMensaje(null);
+                    setMensajeError(null);
+                  }}
+                >
+                  Aceptar
+                </Button>
+              </div>
+            }
+          />
+        )}
     </main>
   );
 }

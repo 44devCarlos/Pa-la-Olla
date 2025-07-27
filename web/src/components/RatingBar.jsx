@@ -5,10 +5,13 @@ export default function RatingBar({ stars, count, maxCount }) {
   const percentage = (count / maxCount) * 100;
 
   return (
-    <div className="flex items-center gap-x-2">
+    <div className="flex items-center">
       <div className="flex w-full items-center justify-between">
-        <span className="pr-2 w-9">{stars}<FaStar className="text-yellow-500 inline-block"></FaStar></span>
-        <div className="relative w-[5rem] md:w-[35rem]">
+        <span className="w-9 pr-2">
+          {stars}
+          <FaStar className="inline-block text-yellow-500"></FaStar>
+        </span>
+        <div className="relative w-[2rem] md:w-[15rem] lg:w-[25rem] xl:w-[35rem]">
           <div
             style={{
               width: `${percentage}%`,

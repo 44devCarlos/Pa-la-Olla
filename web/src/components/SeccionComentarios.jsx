@@ -3,7 +3,14 @@ import RatingBar from "../components/RatingBar.jsx";
 import FormularioComentario from "./FormularioComentario.jsx";
 import ListaComentarios from "./ListaComentarios.jsx";
 
-export default function SeccionComentarios({ calificaciones, comentarios, receta, usuario, setValor, handleSubmit }) {
+export default function SeccionComentarios({
+  calificaciones,
+  comentarios,
+  receta,
+  usuario,
+  setValor,
+  handleSubmit,
+}) {
   return (
     <>
       <section className="mt-12 flex flex-col items-center justify-center gap-y-6 text-red-900">
@@ -11,7 +18,7 @@ export default function SeccionComentarios({ calificaciones, comentarios, receta
           <h2 className="mb-4 self-start text-2xl font-semibold">
             Comentarios y Calificaciones
           </h2>
-          <div className="flex w-full items-center justify-center gap-x-4 px-2 pb-10 shadow-lg">
+          <div className="flex w-full items-center justify-center px-2 pb-10 shadow-lg md:gap-x-4">
             <div className="rounded-xl p-4 text-center shadow">
               <p className="text-3xl font-bold text-orange-600">
                 {parseFloat(calificaciones.calificacion_promedio).toFixed(1) !==
@@ -22,6 +29,7 @@ export default function SeccionComentarios({ calificaciones, comentarios, receta
               <StarRating
                 value={calificaciones.calificacion_promedio}
                 readOnly
+                tamaño={20}
               />
               <p className="text-sm">
                 {calificaciones.total_comentario} reseñas
@@ -66,7 +74,10 @@ export default function SeccionComentarios({ calificaciones, comentarios, receta
         />
 
         {/* Lista de comentarios */}
-        <ListaComentarios comentarios={comentarios} calificaciones={calificaciones} />
+        <ListaComentarios
+          comentarios={comentarios}
+          calificaciones={calificaciones}
+        />
       </section>
     </>
   );
